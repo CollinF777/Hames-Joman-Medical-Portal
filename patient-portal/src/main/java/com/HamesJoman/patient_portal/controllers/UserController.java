@@ -83,6 +83,18 @@ public class UserController {
     }
 
     /**
+     * DELETE /api/users/{id}
+     * Deletes a user based off their id
+     *
+     * @param id the unique identifier of the user
+     * @return True if successful, false if not
+     */
+    @DeleteMapping("/{id}")
+    public Boolean deleteUser(@PathVariable int id) {
+        return userService.deleteUser(id);
+    }
+
+    /**
      * Data Transfer Object for user creation.
      * Contains all user fields that can be set via the API.
      *
