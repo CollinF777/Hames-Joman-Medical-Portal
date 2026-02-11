@@ -1,22 +1,43 @@
 package com.HamesJoman.patient_portal.models;
 
 import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
 /**
  * Model for User.
  *
  * @author Collin Fair
  */
+@Entity // Marks as DB table
+@Table(name = "users") // Guess.
+// Puts all users into one table instead of diff tables for diff roles
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+// Creates the correct object based on the user-type aka their role
+@DiscriminatorColumn(name = "user-type", discriminatorType = DiscriminatorType.STRING)
 public abstract class User {
 
-    private int id; // This should probably become long
+    @Id // PK
+    // Makes use of SQL Auto-Increment
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    // I'm not gonna comment each of these, names are self-explanatory just msg me if confused
+    @Column(nullable = false)
     private String firstName;
+    @Column(nullable = false)
     private String lastName;
+    @Column(nullable = false, unique = true)
     private String username;
+    @Column(nullable = false)
     private String password; // hashed string (idk how we're gonna hash yet, look into jwt integration)
+    @Column(nullable = false)
     private String role; // Slight change from how we did it in 427, ask me for clarification if curious
     private LocalDateTime lastLogin;
     private LocalDateTime lastPasswordChange;
+
+    // You need a default constructor or else JPA takes you out back and shoots you
+    protected User() {
+
+    }
 
     public User(int id, String firstName, String lastName, String username, String password) {
         this.id = id;

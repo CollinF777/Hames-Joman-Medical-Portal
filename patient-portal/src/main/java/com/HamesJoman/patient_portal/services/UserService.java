@@ -1,12 +1,13 @@
 package com.HamesJoman.patient_portal.services;
 
 import com.HamesJoman.patient_portal.models.*;
+import com.HamesJoman.patient_portal.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Service layer for managing User entities.
@@ -21,12 +22,9 @@ import java.util.Optional;
  */
 @Service
 public class UserService {
-    private ArrayList<User> users;
-    private int idCounter = 1;
 
-    public UserService() {
-        users = new ArrayList<>();
-    }
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * Creates a new user with the specified details and role.
@@ -38,103 +36,88 @@ public class UserService {
      * @param username Unique username for login
      * @param password User's password (we'll figure out how to hash at some point... not today though)
      * @param role The user's role: "patient", "doctor", or "admin"
-     * @return The newly created User object (Patient, Doctor, or Admin)
+     * @return The newly created User object (Patient, Doctor, or Admin) with db assigned ID
      * @throws RuntimeException if the role is not valid
      */
     public User createUser(String firstName, String lastName, String username, String password, String role) {
-        // Generate unique ID for the new user
-        int userId = idCounter++;
-
         // Create the appropriate user subclass based on role
         User newUser;
         switch (role.toLowerCase()) {
+            // Important noteL id is getting set as 0 because its gonna get ignored by jpa when a new entity is created
             case "patient":
-                newUser = new Patient(userId, firstName, lastName, username, password);
+                newUser = new Patient(0, firstName, lastName, username, password);
                 break;
             case "doctor":
-                newUser = new Doctor(userId, firstName, lastName, username, password);
+                newUser = new Doctor(0, firstName, lastName, username, password);
                 break;
             case "admin":
-                newUser = new Admin(userId, firstName, lastName, username, password);
+                newUser = new Admin(0, firstName, lastName, username, password);
                 break;
             default:
                 throw new RuntimeException("Invalid role for user: " + role);
         }
-        users.add(newUser);
-        return newUser;
+        return userRepository.save(newUser);
     }
 
     /**
-     * Retrieves all users in the system.
-     * Returns a copy of the users list so the main one doesnt get messed up
+     * Retrieves all users in the system from the db.
+     * Returns every type in one list (Admin, Doctor, Patient)
      * Also this is new code added by me (Collin) i'm running off the assumption
-     * admins wiil have every user displayed at once like in web app
+     * admins will have every user displayed at once like in web app
      *
-     * @return A new ArrayList containing all users
+     * @return A list of all users in the db
      */
     public List<User> getAllUsers() {
-        return new ArrayList<>(users);
+        return userRepository.findAll();
     }
 
     /**
      * Finds and retrieves a user by their unique ID.
-     * Iterates through the users list to find a matching ID.
      *
      * @param id The unique identifier of the user to find
      * @return The User object if found, null if not found
      */
     public User getUser(int id) {
-        // Loop through all users to find matching ID
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getId() == id) {
-                return users.get(i);
-            }
-        }
-        // Return null if no user found with that ID
-        return null;
+        return userRepository.findById(id).orElse(null);
     }
 
     /**
      * Updates an existing user's information.
-     * Searches for the user by ID and replaces their data with the updated user object.
-     * The ID of the updated user is preserved to maintain referential integrity.
+     * ID is preserved to maintain integrity
+     * If the db cant find the id then it returns null
+     *
+     * This is a complete update, we probably wanna make a partial
+     * update in the future so nothing is overwritten on accident
+     * but that's a future problem
      *
      * @param id The ID of the user to update
      * @param updatedUser The User object containing updated information
      * @return The updated User object if found, null if user doesn't exist
      */
     public User updateUser(int id, User updatedUser) {
-        // Search through the users list to find the matching ID
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getId() == id) {
-                // Preserve the original ID to prevent ID changes
-                updatedUser.setId(id);
-                // Replace the old user object with the updated one
-                users.set(i, updatedUser);
-                return updatedUser;
-            }
+        if (userRepository.existsById(id)) {
+            updatedUser.setId(id);
+            return userRepository.save(updatedUser);
         }
-        // Return null if user not found
         return null;
     }
 
     /**
-     * Deletes a user from the system by their ID.
-     * Searches through the list and removes the user if found.
+     * Deletes a user from the db by their ID.
+     *
+     * If like web app, we wanna make this not a full delete like it currently is
+     * but instead make the user inactive, or maybe that was just appointments
+     * if you read this then remind me to ask Jenny
      *
      * @param id The ID of the user to delete
      * @return true if a user was deleted, false if no user with that ID exists
      */
     public boolean deleteUser(int id) {
-        // Loop through users to find the one to delete
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getId() == id) {
-                users.remove(i);
-                return true;
-            }
-        }
-        // Return false if user not found
-        return false;
+       if (userRepository.existsById(id)) {
+           userRepository.deleteById(id);
+           return true;
+       }
+       return false;
     }
 
     /**
@@ -150,6 +133,7 @@ public class UserService {
         User user = getUser(id);
         if (user != null) {
             user.setLastLogin(LocalDateTime.now());
+            userRepository.save(user);
         }
     }
 }
