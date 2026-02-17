@@ -3,10 +3,10 @@ package com.HamesJoman.patient_portal.services;
 import com.HamesJoman.patient_portal.models.*;
 import com.HamesJoman.patient_portal.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,32 +26,42 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    // For password hashing
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     /**
      * Creates a new user with the specified details and role.
+     * Hashes the password with BCrypt before storing
      * Automatically assigns a unique ID and sets the password change timestamp.
      * The role determines which subclass (Patient, Doctor, or Admin) is instantiated.
      *
      * @param firstName User's first name
      * @param lastName User's last name
      * @param username Unique username for login
-     * @param password User's password (we'll figure out how to hash at some point... not today though)
+     * @param password User's password (hashed)
      * @param role The user's role: "patient", "doctor", or "admin"
      * @return The newly created User object (Patient, Doctor, or Admin) with db assigned ID
      * @throws RuntimeException if the role is not valid
      */
     public User createUser(String firstName, String lastName, String username, String password, String role) {
+        if (userRepository.existsByUsername(username)) {
+            throw new RuntimeException("Username already taken: " + username);
+        }
+        // Hash password
+        String hashedPassword = passwordEncoder.encode(password);
+
         // Create the appropriate user subclass based on role
         User newUser;
         switch (role.toLowerCase()) {
-            // Important noteL id is getting set as 0 because its gonna get ignored by jpa when a new entity is created
+            // Important note: id is getting set as 0 because its gonna get ignored by jpa when a new entity is created
             case "patient":
-                newUser = new Patient(0, firstName, lastName, username, password);
+                newUser = new Patient(0, firstName, lastName, username, hashedPassword);
                 break;
             case "doctor":
-                newUser = new Doctor(0, firstName, lastName, username, password);
+                newUser = new Doctor(0, firstName, lastName, username, hashedPassword);
                 break;
             case "admin":
-                newUser = new Admin(0, firstName, lastName, username, password);
+                newUser = new Admin(0, firstName, lastName, username, hashedPassword);
                 break;
             default:
                 throw new RuntimeException("Invalid role for user: " + role);
@@ -135,5 +145,17 @@ public class UserService {
             user.setLastLogin(LocalDateTime.now());
             userRepository.save(user);
         }
+    }
+
+    /**
+     * Verifies that a hashed password matches the regular password
+     * We'll use this for login authentication
+     *
+     * @param rawPassword The plain password
+     * @param hashedPassword Guess
+     * @return true if they match, false otherwise
+     */
+    public boolean verifyPassword(String rawPassword, String hashedPassword) {
+        return passwordEncoder.matches(rawPassword, hashedPassword);
     }
 }
