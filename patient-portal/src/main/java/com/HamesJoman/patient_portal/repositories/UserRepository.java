@@ -14,5 +14,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-
+    // I lied im adding code here
+    // This one just verifies that the username is unique
+    boolean existsByUsername(String username);
 }

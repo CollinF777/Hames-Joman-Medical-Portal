@@ -44,6 +44,9 @@ public class UserService {
      * @throws RuntimeException if the role is not valid
      */
     public User createUser(String firstName, String lastName, String username, String password, String role) {
+        if (userRepository.existsByUsername(username)) {
+            throw new RuntimeException("Username already taken: " + username);
+        }
         // Hash password
         String hashedPassword = passwordEncoder.encode(password);
 
