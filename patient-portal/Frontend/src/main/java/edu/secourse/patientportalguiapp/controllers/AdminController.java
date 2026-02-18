@@ -1,0 +1,129 @@
+package edu.secourse.patientportalguiapp.controllers;
+
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+public class AdminController {
+    @FXML
+    private Label actionText;
+
+    @FXML
+    protected void onDoctorSearchAptButtonClick() {
+        actionText.setText("Searching Doctor Appointments.");
+
+        try {
+            // Load the new FXML
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/edu/secourse/patientportalguiapp/search-appt-by-doctor-view.fxml")
+            );
+
+            Scene scene = new Scene(loader.load(), 400, 400);
+
+            Stage popup = new Stage();
+            popup.setTitle("Search Doctor Appointments");
+            popup.setScene(scene);
+            popup.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void onPatientSearchAptButtonClick() {
+        actionText.setText("Searching Patient appointments");
+
+        try {
+            // Load the new FXML
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/edu/secourse/patientportalguiapp/search-appt-by-patient-view.fxml")
+            );
+
+            Scene scene = new Scene(loader.load(), 400, 400);
+
+            Stage popup = new Stage();
+            popup.setTitle("Search Appointment by Patient");
+            popup.setScene(scene);
+            popup.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void onNewAptButtonClick() {
+        actionText.setText("Creating a new Appointment");
+
+        try {
+            // Load the new FXML
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/edu/secourse/patientportalguiapp/create-appt-view.fxml")
+            );
+
+            Scene scene = new Scene(loader.load(), 400, 400);
+
+            Stage popup = new Stage();
+            popup.setTitle("Create Appointment");
+            popup.setScene(scene);
+            popup.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    protected void onNewPatientButtonClick() {
+        actionText.setText("Creating a new Patient");
+
+        try {
+            // Load the new FXML
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/edu/secourse/patientportalguiapp/create-patient-view.fxml")
+            );
+
+            Scene scene = new Scene(loader.load(), 400, 400);
+
+            Stage popup = new Stage();
+            popup.setTitle("Create Patient");
+            popup.setScene(scene);
+            popup.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void onNewDoctorButtonClick() {
+        actionText.setText("Creating a new Doctor");
+
+        try {
+            // Load the new FXML
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/edu/secourse/patientportalguiapp/create-doctor-view.fxml")
+            );
+
+            Scene scene = new Scene(loader.load(), 400, 400);
+
+            Stage popup = new Stage();
+            popup.setTitle("Create Doctor");
+            popup.setScene(scene);
+            popup.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void onExitButtonClick() {
+        System.exit(0);
+    }
+
+}
