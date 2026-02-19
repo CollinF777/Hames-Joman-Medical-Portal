@@ -1,6 +1,8 @@
 package com.HamesJoman.patient_portal.models;
 
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 /**
@@ -27,8 +29,9 @@ public abstract class User {
     private String lastName;
     @Column(nullable = false, unique = true)
     private String username;
+    @JsonIgnore // Just stops the password from being sent over every time. mostly for appointments
     @Column(nullable = false)
-    private String password; // hashed string (idk how we're gonna hash yet, look into jwt integration)
+    private String password; // hashed string
     @Column(nullable = false)
     private String role; // Slight change from how we did it in 427, ask me for clarification if curious
     private LocalDateTime lastLogin;
