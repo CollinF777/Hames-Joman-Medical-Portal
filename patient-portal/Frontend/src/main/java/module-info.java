@@ -3,6 +3,9 @@ module com.HamesJoman.patientportalguiapp {
     requires javafx.fxml;
 
     requires org.kordamp.bootstrapfx.core;
+    requires java.net.http;
+
+    requires com.fasterxml.jackson.databind;
 
     opens com.HamesJoman.patientportalguiapp to javafx.fxml;
     exports com.HamesJoman.patientportalguiapp;
