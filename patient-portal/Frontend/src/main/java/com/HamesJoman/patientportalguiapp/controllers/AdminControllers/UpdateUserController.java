@@ -47,6 +47,8 @@ public class UpdateUserController {
     @FXML
     public void initialize() {
         roleComboBox.getItems().addAll("Patient", "Doctor", "Admin");
+        setEditFieldsDisabled(true);
+        loadUsers();
 
         // Autofill fields with a users info when selected
         userSelectComboBox.setOnAction(e -> onUserSelected());

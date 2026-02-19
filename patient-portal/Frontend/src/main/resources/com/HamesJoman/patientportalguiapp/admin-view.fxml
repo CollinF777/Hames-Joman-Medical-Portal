@@ -19,7 +19,7 @@
     <Button mnemonicParsing="false" onAction="#onDoctorSearchAptButtonClick" text="Search Appointments by Doctor" />
     <Button mnemonicParsing="false" onAction="#onNewAptButtonClick" text="New Appointment" />
     <Button mnemonicParsing="false" onAction="#onNewUserButtonClick" text="New User" />
-    <Button mnemonicParsing="false" onAction="#onUpdateUserButtonClick" text="Update User" />
+    <Button mnemonicParsing="false" onAction="#onUpdateUserButtonClick" text="Update Uer" />
     <ButtonBar prefHeight="40.0" prefWidth="200.0">
         <buttons>
             <Button mnemonicParsing="false" onAction="#onExitButtonClick" text="Exit application" />

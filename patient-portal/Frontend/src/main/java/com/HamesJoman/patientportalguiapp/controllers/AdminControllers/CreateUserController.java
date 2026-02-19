@@ -1,5 +1,6 @@
 package com.HamesJoman.patientportalguiapp.controllers.AdminControllers;
 
+import com.HamesJoman.patientportalguiapp.ApiClient;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -7,6 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import java.net.http.HttpResponse;
 
 public class CreateUserController {
     @FXML
@@ -45,15 +48,30 @@ public class CreateUserController {
             return;
         }
 
-        String role = roleComboBox.getValue();
+        try {
+            HttpResponse<String> response = ApiClient.createUser(
+                    firstNameField.getText(),
+                    lastNameField.getText(),
+                    usernameField.getText(),
+                    passwordField.getText(),
+                    roleComboBox.getValue()
+            );
 
-        firstNameField.clear();
-        lastNameField.clear();
-        usernameField.clear();
-        passwordField.clear();
-        roleComboBox.setValue("Patient");
-
-        actionText.setText(role + " created successfully!");
+            if (response.statusCode() == 200) {
+                actionText.setText(roleComboBox.getValue() + " created successfully");
+                firstNameField.clear();
+                lastNameField.clear();
+                usernameField.clear();
+                passwordField.clear();
+                roleComboBox.setValue("Patient");
+            }
+            else {
+                actionText.setText("Failed to create user: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            actionText.setText("Couldn't connect to server");
+            e.printStackTrace();
+        }
     }
 
     @FXML
