@@ -1,5 +1,6 @@
 package com.HamesJoman.patient_portal.services;
 
+import com.HamesJoman.patient_portal.dto.UserRequest;
 import com.HamesJoman.patient_portal.models.*;
 import com.HamesJoman.patient_portal.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,24 +93,28 @@ public class UserService {
     }
 
     /**
-     * Updates an existing user's information.
-     * ID is preserved to maintain integrity
-     * If the db cant find the id then it returns null
+     *  Updates an existing user from a UserRequest
+     *  If password is blank, the existing hashed password is kept unchanged
      *
-     * This is a complete update, we probably wanna make a partial
-     * update in the future so nothing is overwritten on accident
-     * but that's a future problem
-     *
-     * @param id The ID of the user to update
-     * @param updatedUser The User object containing updated information
-     * @return The updated User object if found, null if user doesn't exist
+     * @param id users id
+     * @param request A request filled with user info
+     * @return Updated user
      */
-    public User updateUser(int id, User updatedUser) {
-        if (userRepository.existsById(id)) {
-            updatedUser.setId(id);
-            return userRepository.save(updatedUser);
+    public User updateUser(int id, UserRequest request) {
+        User existing = userRepository.findById(id).orElse(null);
+        if (existing == null) return null;
+
+        existing.setFirstName(request.getFirstName());
+        existing.setLastName(request.getLastName());
+        existing.setUsername(request.getUsername());
+        existing.setRole(request.getRole());
+
+        // Only update password if a new one was actually provided
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            existing.setPassword(passwordEncoder.encode(request.getPassword()));
         }
-        return null;
+
+        return userRepository.save(existing);
     }
 
     /**
