@@ -1,4 +1,4 @@
-package edu.secourse.patientportalguiapp.controllers;
+package com.HamesJoman.patientportalguiapp.controllers.AdminControllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +19,7 @@ public class AdminController {
         try {
             // Load the new FXML
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/edu/secourse/patientportalguiapp/search-appt-by-doctor-view.fxml")
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/Admin/search-appt-by-doctor-view.fxml")
             );
 
             Scene scene = new Scene(loader.load(), 400, 400);
@@ -41,7 +41,7 @@ public class AdminController {
         try {
             // Load the new FXML
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/edu/secourse/patientportalguiapp/search-appt-by-patient-view.fxml")
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/Admin/search-appt-by-patient-view.fxml")
             );
 
             Scene scene = new Scene(loader.load(), 400, 400);
@@ -63,7 +63,7 @@ public class AdminController {
         try {
             // Load the new FXML
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/edu/secourse/patientportalguiapp/create-appt-view.fxml")
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/Admin/create-appt-view.fxml")
             );
 
             Scene scene = new Scene(loader.load(), 400, 400);
@@ -84,7 +84,7 @@ public class AdminController {
         try {
             // Load the new FXML
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/edu/secourse/patientportalguiapp/create-patient-view.fxml")
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/Admin/create-patient-view.fxml")
             );
 
             Scene scene = new Scene(loader.load(), 400, 400);
@@ -106,7 +106,7 @@ public class AdminController {
         try {
             // Load the new FXML
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/edu/secourse/patientportalguiapp/create-doctor-view.fxml")
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/Admin/create-doctor-view.fxml")
             );
 
             Scene scene = new Scene(loader.load(), 400, 400);

@@ -1,12 +1,16 @@
-module edu.secourse.patientportalguiapp {
+module com.HamesJoman.patientportalguiapp {
     requires javafx.controls;
     requires javafx.fxml;
 
     requires org.kordamp.bootstrapfx.core;
+    requires java.net.http;
 
-    opens edu.secourse.patientportalguiapp to javafx.fxml;
-    exports edu.secourse.patientportalguiapp;
+    requires com.fasterxml.jackson.databind;
 
-    opens edu.secourse.patientportalguiapp.controllers to javafx.fxml;
-    exports edu.secourse.patientportalguiapp.controllers;
+    opens com.HamesJoman.patientportalguiapp to javafx.fxml;
+    exports com.HamesJoman.patientportalguiapp;
+
+    opens com.HamesJoman.patientportalguiapp.controllers to javafx.fxml;
+    exports com.HamesJoman.patientportalguiapp.controllers.AdminControllers;
+    opens com.HamesJoman.patientportalguiapp.controllers.AdminControllers to javafx.fxml;
 }

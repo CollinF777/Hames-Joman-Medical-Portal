@@ -9,7 +9,7 @@
       maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
       xmlns="http://javafx.com/javafx/17.0.2-ea"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="edu.secourse.patientportalguiapp.controllers.SearchApptByDoctorView">
+      fx:controller="com.HamesJoman.patientportalguiapp.controllers.AdminControllers.SearchApptByDoctorView">
 
     <children>
         <Label alignment="TOP_CENTER" text="Search by Doctor ID" textFill="#309423">
