@@ -4,9 +4,11 @@ module edu.secourse.patientportalguiapp {
 
     requires org.kordamp.bootstrapfx.core;
 
-    opens edu.secourse.patientportalguiapp to javafx.fxml;
-    exports edu.secourse.patientportalguiapp;
+    opens com.HamesJoman.patientportalguiapp to javafx.fxml;
+    exports com.HamesJoman.patientportalguiapp;
 
-    opens edu.secourse.patientportalguiapp.controllers to javafx.fxml;
-    exports edu.secourse.patientportalguiapp.controllers;
+    opens com.HamesJoman.patientportalguiapp.controllers to javafx.fxml;
+    exports com.HamesJoman.patientportalguiapp.controllers;
+    exports com.HamesJoman.patientportalguiapp.controllers.AdminControllers;
+    opens com.HamesJoman.patientportalguiapp.controllers.AdminControllers to javafx.fxml;
 }

@@ -1,4 +1,4 @@
-package edu.secourse.patientportalguiapp.controllers;
+package com.HamesJoman.patientportalguiapp.controllers.AdminControllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

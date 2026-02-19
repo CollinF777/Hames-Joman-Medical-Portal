@@ -1,4 +1,4 @@
-package edu.secourse.patientportalguiapp;
+package com.HamesJoman.patientportalguiapp;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
