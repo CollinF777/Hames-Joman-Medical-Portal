@@ -9,19 +9,20 @@
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-   <Label fx:id="AdminDashboardLabel" text="Admin Dashboard" textFill="#44ab2a">
-      <font>
-         <Font size="18.0" />
-      </font></Label>
-   <Label fx:id="actionText" textFill="#061083" />
-   <Button mnemonicParsing="false" onAction="#onPatientSearchAptButtonClick" text="Search Appointments by Patient" />
-   <Button mnemonicParsing="false" onAction="#onDoctorSearchAptButtonClick" text="Search Appointments by Doctor" />
-   <Button mnemonicParsing="false" onAction="#onNewAptButtonClick" text="New Appointment" />
-   <Button mnemonicParsing="false" onAction="#onNewPatientButtonClick" text="New Patient" />
-    <Button mnemonicParsing="false" onAction="#onNewDoctorButtonClick" text="New Doctor" />
-   <ButtonBar prefHeight="40.0" prefWidth="200.0">
-     <buttons>
-         <Button mnemonicParsing="false" onAction="#onExitButtonClick" text="Exit application" />
-     </buttons>
-   </ButtonBar>
+    <Label fx:id="AdminDashboardLabel" text="Admin Dashboard" textFill="#44ab2a">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <Label fx:id="actionText" textFill="#061083" />
+    <Button mnemonicParsing="false" onAction="#onPatientSearchAptButtonClick" text="Search Appointments by Patient" />
+    <Button mnemonicParsing="false" onAction="#onDoctorSearchAptButtonClick" text="Search Appointments by Doctor" />
+    <Button mnemonicParsing="false" onAction="#onNewAptButtonClick" text="New Appointment" />
+    <Button mnemonicParsing="false" onAction="#onNewUserButtonClick" text="New User" />
+    <Button mnemonicParsing="false" onAction="#onUpdateUserButtonClick" text="Update User" />
+    <ButtonBar prefHeight="40.0" prefWidth="200.0">
+        <buttons>
+            <Button mnemonicParsing="false" onAction="#onExitButtonClick" text="Exit application" />
+        </buttons>
+    </ButtonBar>
 </VBox>

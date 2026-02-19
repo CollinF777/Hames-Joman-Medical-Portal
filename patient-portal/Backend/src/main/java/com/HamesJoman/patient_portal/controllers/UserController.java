@@ -84,6 +84,20 @@ public class UserController {
     }
 
     /**
+     * PUT /api/users/{id}
+     * Updates an existing user's details.
+     * If password is blank, it is left unchanged.
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody UserRequest request) {
+        User updated = userService.updateUser(id, request);
+        if (updated != null) {
+            return ResponseEntity.ok(updated);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    /**
      * DELETE /api/users/{id}
      * Deletes a user based off their id
      *
