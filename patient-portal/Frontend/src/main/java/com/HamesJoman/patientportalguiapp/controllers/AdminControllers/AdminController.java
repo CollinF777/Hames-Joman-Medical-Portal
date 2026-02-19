@@ -97,6 +97,24 @@ public class AdminController {
     }
 
     @FXML
+    protected void onUpdateUserButtonClick() {
+        actionText.setText("Updating a User");
+
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/Admin/update-user-view.fxml")
+            );
+            Scene scene = new Scene(loader.load(), 400, 450);
+            Stage popup = new Stage();
+            popup.setTitle("Update User");
+            popup.setScene(scene);
+            popup.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     public void onExitButtonClick() {
         System.exit(0);
     }
