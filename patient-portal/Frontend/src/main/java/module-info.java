@@ -1,4 +1,4 @@
-module edu.secourse.patientportalguiapp {
+module com.HamesJoman.patientportalguiapp {
     requires javafx.controls;
     requires javafx.fxml;
 
@@ -8,7 +8,6 @@ module edu.secourse.patientportalguiapp {
     exports com.HamesJoman.patientportalguiapp;
 
     opens com.HamesJoman.patientportalguiapp.controllers to javafx.fxml;
-    exports com.HamesJoman.patientportalguiapp.controllers;
     exports com.HamesJoman.patientportalguiapp.controllers.AdminControllers;
     opens com.HamesJoman.patientportalguiapp.controllers.AdminControllers to javafx.fxml;
 }

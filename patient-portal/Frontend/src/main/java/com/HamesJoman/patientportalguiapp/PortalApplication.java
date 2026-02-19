@@ -10,8 +10,8 @@ import java.io.IOException;
 public class PortalApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(PortalApplication.class.getResource("admin-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 400, 400);
+        FXMLLoader fxmlLoader = new FXMLLoader(PortalApplication.class.getResource("login-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 700, 400);
         stage.setTitle("Patient Portal");
         stage.setScene(scene);
         stage.show();

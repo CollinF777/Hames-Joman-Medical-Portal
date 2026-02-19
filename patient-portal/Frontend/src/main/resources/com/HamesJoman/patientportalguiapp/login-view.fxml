@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+
+<HBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.HamesJoman.patientportalguiapp.controllers.LoginController" prefHeight="400.0" prefWidth="700.0">
+    <VBox alignment="CENTER" spacing="20.0" prefWidth="350.0">
+        <padding>
+            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+        </padding>
+        <Label text="Hames Joman Medical Institute" textFill="#309423">
+            <font>
+                <Font size="19.0" />
+            </font>
+        </Label>
+        <Label text="Please log in" textFill="#555555">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label fx:id="actionText" textFill="#cc0000">
+            <font>
+                <Font size="13.0" />
+            </font>
+        </Label>
+        <GridPane hgap="10.0" vgap="15.0">
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" minWidth="80.0"/>
+                <ColumnConstraints halignment="LEFT" minWidth="150.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints prefHeight="30.0" />
+                <RowConstraints prefHeight="30.0" />
+            </rowConstraints>
+            <children>
+                <Label text="Username:" GridPane.rowIndex="0">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="usernameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Label text="Password:" GridPane.rowIndex="1">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            </children>
+        </GridPane>
+        <Button text="Login" onAction="#onLoginButtonClick" prefWidth="100.0" />
+    </VBox>
+    <Separator orientation="VERTICAL">
+        <HBox.margin>
+            <Insets top="40.0" bottom="40.0" />
+        </HBox.margin>
+    </Separator>
+    <VBox alignment="CENTER" prefWidth="350.0" style="-fx-background-color: #f0f0f0;">
+        <padding>
+            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+        </padding>
+        <ImageView fx:id="logoImage" fitHeight="300.0" fitWidth="250.0" preserveRatio="true">
+                <image>
+                    <Image url="@Images/DrHamesJoman.jpg"/>
+                </image>
+        </ImageView>
+    </VBox>
+</HBox>
