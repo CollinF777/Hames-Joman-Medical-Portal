@@ -80,6 +80,37 @@ public class ApiClient {
     }
 
     /**
+     *
+     * @param firstName User first name
+     * @param lastName User last name
+     * @param username users username
+     * @param password users password
+     * @param role users role
+     * @return HttpResponse containing String response
+     * @throws Exception if request fails
+     */
+    public static HttpResponse<String> createUser(String firstName, String lastName,
+                                                  String username, String password, String role) throws Exception {
+        /**
+         * JSON Request body
+         * Should look like
+         * {"firstName": "name", "lastName": "name", "username": "name", "password": "hashedpass", "role": "userRole"}
+         */
+        String json = String.format(
+                "{\"firstName\":\"%s\",\"lastName\":\"%s\",\"username\":\"%s\",\"password\":\"%s\",\"role\":\"%s\"}",
+                firstName, lastName, username, password, role
+        );
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/users"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    /**
      * Update an existing user
      * PUT /api/users/{id}
      *
