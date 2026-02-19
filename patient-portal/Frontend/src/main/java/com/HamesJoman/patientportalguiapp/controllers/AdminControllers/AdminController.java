@@ -77,45 +77,20 @@ public class AdminController {
             e.printStackTrace();
         }
     }
-    @FXML
-    protected void onNewPatientButtonClick() {
-        actionText.setText("Creating a new Patient");
-
-        try {
-            // Load the new FXML
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/com/HamesJoman/patientportalguiapp/Admin/create-patient-view.fxml")
-            );
-
-            Scene scene = new Scene(loader.load(), 400, 400);
-
-            Stage popup = new Stage();
-            popup.setTitle("Create Patient");
-            popup.setScene(scene);
-            popup.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @FXML
-    protected void onNewDoctorButtonClick() {
-        actionText.setText("Creating a new Doctor");
+    protected void onNewUserButtonClick() {
+        actionText.setText("Creating a new User");
 
         try {
-            // Load the new FXML
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/com/HamesJoman/patientportalguiapp/Admin/create-doctor-view.fxml")
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/Admin/create-user-view.fxml")
             );
-
             Scene scene = new Scene(loader.load(), 400, 400);
-
             Stage popup = new Stage();
-            popup.setTitle("Create Doctor");
+            popup.setTitle("Create User");
             popup.setScene(scene);
             popup.show();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
