@@ -18,7 +18,7 @@ import java.util.List;
  *
  * All endpoints are prefixed with /api/appointments
  *
- * @author Collin Fair
+ * @author Nathan Amidon
  */
 @RestController
 @RequestMapping("/api/appointments")

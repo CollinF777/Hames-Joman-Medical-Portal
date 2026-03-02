@@ -18,6 +18,9 @@ import java.util.List;
  *
  * Conflict checks only look at ACTIVE appointments — CANCELLED and FINISHED
  * appointments do not block new bookings in the same time slot.
+ *
+ * @author Nathan Amidon
+ *
  */
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {

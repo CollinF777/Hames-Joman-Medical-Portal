@@ -8,6 +8,8 @@ package com.HamesJoman.patient_portal.dto;
  *   date      — "YYYY-MM-DD"  (e.g. "2025-08-15")
  *   startTime — "HH:mm"       (e.g. "09:00")
  *   endTime   — "HH:mm"       (e.g. "09:30")
+ *
+ * @author Nathan Amidon
  */
 public class AppointmentRequest {
 
