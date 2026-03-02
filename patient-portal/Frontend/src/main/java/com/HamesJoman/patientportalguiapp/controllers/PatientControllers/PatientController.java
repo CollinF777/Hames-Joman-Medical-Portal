@@ -1,4 +1,4 @@
-package your.package;
+package com.HamesJoman.patientportalguiapp.controllers.PatientControllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
