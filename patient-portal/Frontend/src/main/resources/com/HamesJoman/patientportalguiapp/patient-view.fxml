@@ -23,7 +23,6 @@
             <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="166.0" text="My Appointments" />
             <Button mnemonicParsing="false" prefHeight="51.0" prefWidth="166.0" text="Change Password" />
          </children></VBox>
-      <VBox layoutX="199.0" layoutY="129.0" prefHeight="25.0" prefWidth="382.0" />
       <HBox alignment="CENTER_RIGHT" layoutX="163.0" layoutY="73.0" prefHeight="25.0" prefWidth="414.0" spacing="5.0">
          <children>
             <Label text="Status:" />
