@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ import java.util.List;
  * Appointments are NEVER deleted from the database. Cancellations and
  * completions are tracked via the Status enum.
  *
- * @author Collin Fair
+ * @author Nathan Amidon
  */
 @Service
 public class AppointmentService {
@@ -49,10 +50,18 @@ public class AppointmentService {
      *                                  or if a time conflict exists
      */
     public Appointment createAppointment(AppointmentRequest request) {
-        LocalDate date      = LocalDate.parse(request.getDate());
-        LocalTime startTime = LocalTime.parse(request.getStartTime());
-        LocalTime endTime   = LocalTime.parse(request.getEndTime());
-
+        LocalDate date;
+        LocalTime startTime;
+        LocalTime endTime;
+        try {
+            date = LocalDate.parse(request.getDate());
+            startTime = LocalTime.parse(request.getStartTime());
+            endTime = LocalTime.parse(request.getEndTime());
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException(
+                    "Invalid date or time format. Should be YYYY-MM-DD and HH:mm but got: " + e.getParsedString()
+            );
+        }
         if (!endTime.isAfter(startTime)) {
             throw new IllegalArgumentException("End time must be after start time");
         }
@@ -91,9 +100,18 @@ public class AppointmentService {
             );
         }
 
-        LocalDate date      = LocalDate.parse(request.getDate());
-        LocalTime startTime = LocalTime.parse(request.getStartTime());
-        LocalTime endTime   = LocalTime.parse(request.getEndTime());
+        LocalDate date;
+        LocalTime startTime;
+        LocalTime endTime;
+        try {
+            date = LocalDate.parse(request.getDate());
+            startTime = LocalTime.parse(request.getStartTime());
+            endTime = LocalTime.parse(request.getEndTime());
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException(
+                    "Invalid date or time format. Should be YYYY-MM-DD and HH:mm but got: " + e.getParsedString()
+            );
+        }
 
         if (!endTime.isAfter(startTime)) {
             throw new IllegalArgumentException("End time must be after start time");
