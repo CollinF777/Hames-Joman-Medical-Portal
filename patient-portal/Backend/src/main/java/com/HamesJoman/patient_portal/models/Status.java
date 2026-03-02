@@ -8,5 +8,6 @@ package com.HamesJoman.patient_portal.models;
 
 public enum Status {
     ACTIVE,
-    CANCELLED
+    CANCELLED,
+    FINISHED,
 }
