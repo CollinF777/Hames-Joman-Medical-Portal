@@ -20,8 +20,10 @@
     <Button mnemonicParsing="false" onAction="#onNewAptButtonClick" text="New Appointment" />
     <Button mnemonicParsing="false" onAction="#onNewUserButtonClick" text="New User" />
     <Button mnemonicParsing="false" onAction="#onUpdateUserButtonClick" text="Update Uer" />
+   <Button layoutX="93.0" layoutY="297.0" mnemonicParsing="false" onAction="#onDeleteUserButtonClick" text="Delete User" />
     <ButtonBar prefHeight="40.0" prefWidth="200.0">
         <buttons>
+         <Button mnemonicParsing="false" onAction="#onLogoutButtonClick" text="Log out" />
             <Button mnemonicParsing="false" onAction="#onExitButtonClick" text="Exit application" />
         </buttons>
     </ButtonBar>
