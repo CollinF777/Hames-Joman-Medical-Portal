@@ -143,4 +143,22 @@ public class ApiClient {
 
         return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
+
+    /**
+     * Delete an existing user
+     * PUT /api/users/{id}
+     *
+     * @param id user id
+     * @return HttpResponse containing String Response
+     * @throws Exception if request failss
+     */
+    public static HttpResponse<String> deleteUser(String id) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/users/" + id))
+                .header("Content-Type", "application/json")
+                .DELETE()
+                .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
 }
