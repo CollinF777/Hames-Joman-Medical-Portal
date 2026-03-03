@@ -97,6 +97,24 @@ public class AdminController {
     }
 
     @FXML
+    protected void onDeleteUserButtonClick() {
+        actionText.setText("Deleting a User");
+
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/Admin/delete-user-view.fxml")
+            );
+            Scene scene = new Scene(loader.load(), 400, 400);
+            Stage popup = new Stage();
+            popup.setTitle("Delete User");
+            popup.setScene(scene);
+            popup.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     protected void onUpdateUserButtonClick() {
         actionText.setText("Updating a User");
 
