@@ -82,10 +82,12 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/com/HamesJoman/patientportalguiapp/" + fxmlFile)
             );
-            Scene scene = new Scene(loader.load(), 400, 400);
+            Scene scene = new Scene(loader.load());
             Stage stage = (Stage) usernameField.getScene().getWindow();
             stage.setTitle(title);
             stage.setScene(scene);
+            stage.sizeToScene();     // 🔥 important
+            stage.centerOnScreen();
         } catch (Exception e) {
             actionText.setText("Failed to load dashboard");
             e.printStackTrace();

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.HamesJoman.patientportalguiapp.controllers.PatientControllers.PatientController">
+
+    <!-- ================= TOP HEADER ================= -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+            <children>
+                <Label text="Welcome back!">
+                    <font>
+                        <Font size="28" />
+                    </font>
+                </Label>
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Button text="Logout" />
+            </children>
+        </HBox>
+    </top>
+
+
+    <!-- ================= LEFT SIDEBAR ================= -->
+    <left>
+        <VBox spacing="10">
+            <padding>
+                <Insets bottom="15" left="15" right="15" top="15" />
+            </padding>
+            <children>
+                <Button onAction="#showDashboard" text="Dashboard" />
+                <Button onAction="#showAppointments" text="My Appointments" />
+                <Button onAction="#showPassword" text="Change Password" />
+            </children>
+        </VBox>
+    </left>
+
+
+    <!-- ================= CENTER CONTENT ================= -->
+    <center>
+        <StackPane fx:id="contentStack">
+
+            <!-- DASHBOARD -->
+            <GridPane fx:id="dashboardPane">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="100" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints percentHeight="25" />
+                    <RowConstraints percentHeight="25" />
+                    <RowConstraints percentHeight="25" />
+                    <RowConstraints percentHeight="25" />
+                </rowConstraints>
+
+                <children>
+                    <Label alignment="CENTER" text="Patient Dashboard" GridPane.rowIndex="0">
+                        <font>
+                            <Font size="22" />
+                        </font>
+                    </Label>
+
+                    <Label alignment="CENTER" text="Next Appointment:" GridPane.rowIndex="1" />
+
+                    <Label alignment="CENTER" text="Active Appointments:" GridPane.rowIndex="2" />
+
+                    <Label alignment="CENTER" text="Past Appointments:" GridPane.rowIndex="3" />
+                </children>
+            </GridPane>
+
+
+            <!-- APPOINTMENTS -->
+            <GridPane fx:id="appointmentsPane" managed="false" visible="false">
+
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="25" />
+                    <ColumnConstraints percentWidth="25" />
+                    <ColumnConstraints percentWidth="25" />
+                    <ColumnConstraints percentWidth="25" />
+                </columnConstraints>
+
+                <children>
+                    <Label text="Doctor" GridPane.columnIndex="0" />
+                    <Label text="Date" GridPane.columnIndex="1" />
+                    <Label text="Time" GridPane.columnIndex="2" />
+                    <Label text="Status" GridPane.columnIndex="3" />
+                </children>
+            <rowConstraints>
+               <RowConstraints />
+            </rowConstraints>
+            </GridPane>
+
+
+            <!-- CHANGE PASSWORD -->
+            <GridPane fx:id="passwordPane" managed="false" visible="false">
+
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="100" />
+                </columnConstraints>
+
+                <rowConstraints>
+                    <RowConstraints percentHeight="33" />
+                    <RowConstraints percentHeight="33" />
+                    <RowConstraints percentHeight="33" />
+                </rowConstraints>
+
+                <children>
+                    <VBox alignment="CENTER" prefWidth="284.0" spacing="5" GridPane.rowIndex="0">
+                        <children>
+                            <Label text="Current Password:" />
+                            <PasswordField prefWidth="200" />
+                        </children>
+                    </VBox>
+
+                    <VBox alignment="CENTER" spacing="5" GridPane.rowIndex="1">
+                        <children>
+                            <Label text="New Password:" />
+                            <PasswordField prefWidth="200" />
+                        </children>
+                    </VBox>
+
+                    <VBox alignment="CENTER" spacing="5" GridPane.rowIndex="2">
+                        <children>
+                            <Label text="Confirm New Password:" />
+                            <PasswordField prefWidth="200" />
+                     <Button mnemonicParsing="false" text="Confirm" />
+                        </children>
+                    </VBox>
+                </children>
+            </GridPane>
+
+        </StackPane>
+    </center>
+
+</BorderPane>
