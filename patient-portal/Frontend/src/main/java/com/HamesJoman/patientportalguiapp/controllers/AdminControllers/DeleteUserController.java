@@ -108,7 +108,7 @@ public class DeleteUserController {
 
             if (response.statusCode() == 200) {
                 actionText.setText("User successfully deleted");
-                // Refresh drop down in case user has new name
+                // Refresh drop down since user is now gone
                 loadUsers();
             }
             else {
