@@ -22,6 +22,7 @@
     <Button mnemonicParsing="false" onAction="#onUpdateUserButtonClick" text="Update Uer" />
     <ButtonBar prefHeight="40.0" prefWidth="200.0">
         <buttons>
+         <Button mnemonicParsing="false" onAction="#onLogoutButtonClick" text="Log out" />
             <Button mnemonicParsing="false" onAction="#onExitButtonClick" text="Exit application" />
         </buttons>
     </ButtonBar>

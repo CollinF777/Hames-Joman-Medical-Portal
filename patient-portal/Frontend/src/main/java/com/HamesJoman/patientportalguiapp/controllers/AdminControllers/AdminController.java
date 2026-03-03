@@ -119,4 +119,18 @@ public class AdminController {
         System.exit(0);
     }
 
+    public void onLogoutButtonClick() {
+        try{
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/login-view.fxml")
+            );
+            Scene scene = new Scene(loader.load(), 700, 400);
+            Stage stage = (Stage) actionText.getScene().getWindow();
+            stage.setTitle("Patient Portal");
+            stage.setScene(scene);
+            stage.show();
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+    }
 }
