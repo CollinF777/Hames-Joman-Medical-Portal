@@ -1,7 +1,13 @@
 package com.HamesJoman.patientportalguiapp.controllers.PatientControllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class PatientController {
 
@@ -13,6 +19,9 @@ public class PatientController {
 
     @FXML
     private GridPane passwordPane;
+
+    @FXML
+    private Button logoutButton;
 
     @FXML
     private void showDashboard() {
@@ -48,5 +57,21 @@ public class PatientController {
 
         passwordPane.setVisible(true);
         passwordPane.setManaged(true);
+    }
+
+    @FXML
+    public void onLogoutButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/login-view.fxml")
+            );
+            Scene scene = new Scene(loader.load(), 700, 400);
+            Stage stage = (Stage) logoutButton.getScene().getWindow();
+            stage.setTitle("Patient Portal");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
