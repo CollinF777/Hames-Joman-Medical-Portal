@@ -22,7 +22,7 @@
 
                 <Region HBox.hgrow="ALWAYS" />
 
-                <Button text="Logout" />
+                <Button mnemonicParsing="false" onAction="#onLogoutButtonClick" text="Log out" fx:id="logoutButton" />
             </children>
         </HBox>
     </top>
