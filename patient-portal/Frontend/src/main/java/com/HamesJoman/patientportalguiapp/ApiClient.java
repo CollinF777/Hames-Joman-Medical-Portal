@@ -8,6 +8,7 @@ import java.net.http.HttpResponse;
 /**
  * Class to handle all HTTP communication between
  * the JavaFX front end and RESTful APIs in the backend
+ * @author Collin Fair, Liam Callahan
  */
 public class ApiClient {
     // Base backend API url
@@ -16,6 +17,9 @@ public class ApiClient {
     // Start the HttpClient instance
     private static final HttpClient client = HttpClient.newHttpClient();
 
+    //===========================================================================
+    // Auth Routes
+    //===========================================================================
     /**
      * Send a login request
      *
@@ -44,6 +48,9 @@ public class ApiClient {
         return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
+    //===========================================================================
+    // User Routes
+    //===========================================================================
     /**
      * Fetch all users
      * GET /api/users
@@ -150,13 +157,144 @@ public class ApiClient {
      *
      * @param id user id
      * @return HttpResponse containing String Response
-     * @throws Exception if request failss
+     * @throws Exception if request fails
      */
     public static HttpResponse<String> deleteUser(String id) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/users/" + id))
                 .header("Content-Type", "application/json")
                 .DELETE()
+                .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    //===========================================================================
+    // Appointment Routes
+    //===========================================================================
+
+    /**
+     * Fetch all appointments in the db
+     * GET /api/appointments
+     *
+     * @return HttpResponse containing String Response
+     * @throws Exception if request fails
+     */
+    public static HttpResponse<String> getAllAppointments() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/appointments"))
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    /**
+     * Get all appointments for a given patient
+     * GET /api/appointments/patient/{patientId}
+     *
+     * @param patientId the patients id
+     * @return HttpResponse containing String Response
+     * @throws Exception if request fails
+     */
+    public static HttpResponse<String> getAppointmentsByPatient(int patientId) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/appointments/patient/" + patientId))
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    /**
+     * Get all appointments for a given doctor
+     * GET /api/appointments/doctor/{doctorId}
+     *
+     * @param doctorId the doctors id
+     * @return HttpResponse containing String Response
+     * @throws Exception if request fails
+     */
+    public static HttpResponse<String> getAppointmentsByDoctor(int doctorId) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/appointments/doctor/" + doctorId))
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    /**
+     * Creates a new appointment
+     * POST /api/appointments
+     *
+     * @param date Tbe date of the appointment YYYY-MM-DD
+     * @param startTime The appointments start time HH:mm
+     * @param endTime The appointments end time HH:mm
+     * @param patientId The appointments patient id
+     * @param doctorId The appointments doctors id
+     * @return HttpResponse containing String Response
+     * @throws Exception if request fails
+     */
+    public static HttpResponse<String> createAppointment(String date, String startTime, String endTime,
+                                                         int patientId, int doctorId) throws Exception {
+        /**
+         * JSON Request Body
+         * should look like
+         * {"date": "YYYY-MM-DD", "startTime": "HH:mm", "endTime": "HH:mm", "patientId": some int, "doctorId": some int}
+         */
+        String json = String.format("{\"date\":\"%s\",\"startTime\":\"%s\",\"endTime\":\"%s\",\"patientId\":%d,\"doctorId\":%d}",
+                date, startTime, endTime, patientId, doctorId);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/appointments"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    /**
+     * Update an existing appointment
+     * PUT /api/appointments/{id}
+     *
+     * @param id The appointment id
+     * @param date The appointment date
+     * @param startTime The appointments start time
+     * @param endTime The appointments end time
+     * @param patientId The appointments patient id
+     * @param doctorId The appointments doctor id
+     * @return HttpResponse containing String Response
+     * @throws Exception if request fails
+     */
+    public static HttpResponse<String> updateAppointment(int id, String date, String startTime,
+                                                         String endTime, int patientId, int doctorId) throws Exception {
+        String json = String.format("{\"date\":\"%s\",\"startTime\":\"%s\",\"endTime\":\"%s\",\"patientId\":%d,\"doctorId\":%d}",
+                date, startTime, endTime, patientId, doctorId);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/appointments/" + id))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    /**
+     * Cancel an existing appointment
+     * PUT /api/appointments/{id}/cancel
+     *
+     * @param id The appointment id
+     * @return HttpResponse containing String Response
+     * @throws Exception if request fails
+     */
+    public static HttpResponse<String> cancelAppointment(int id) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/appointments/" + id + "/cancel"))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(""))
                 .build();
 
         return client.send(request, HttpResponse.BodyHandlers.ofString());
