@@ -9,59 +9,41 @@
       maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
       xmlns="http://javafx.com/javafx/17.0.2-ea"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.HamesJoman.patientportalguiapp.controllers.AdminControllers.SearchApptByDoctorView">
-
+      fx:controller="com.HamesJoman.patientportalguiapp.controllers.AdminControllers.SearchApptByDoctorController">
+    <padding>
+        <Insets top="15.0" />
+    </padding>
     <children>
-        <Label alignment="TOP_CENTER" text="Search by Doctor ID" textFill="#309423">
+        <Label alignment="TOP_CENTER" text="Search Appointments by Doctor" textFill="#309423">
             <font>
                 <Font size="16.0" />
             </font>
         </Label>
-
-        <GridPane alignment="CENTER" hgap="10.0" vgap="20.0">
-            <columnConstraints>
-                <ColumnConstraints halignment="RIGHT"/>
-                <ColumnConstraints halignment="LEFT"/>
-            </columnConstraints>
-
-            <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            </rowConstraints>
-
-            <children>
-                <Label text="Doctor ID" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </Label>
-
-                <TextField fx:id="doctorIdField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-
-                <Button fx:id="searchButton" text="Search"
-                        onAction="#onSearchButtonClick"
-                        GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-            </children>
-
-            <VBox.margin>
-                <Insets top="40.0"/>
-            </VBox.margin>
-        </GridPane>
-
-        <TextArea fx:id="outputBox" prefHeight="150.0" prefWidth="300.0" wrapText="true" disable="true">
-            <VBox.margin>
-                <Insets top="20.0"/>
-            </VBox.margin>
-        </TextArea>
-
         <HBox alignment="CENTER" spacing="10.0">
             <children>
-                <Button fx:id="backButton" text="Back" onAction="#onBackButtonClick"/>
+                <Label text="Select Doctor:">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <ComboBox fx:id="doctorSelectComboBox" prefWidth="240.0" />
             </children>
             <VBox.margin>
-                <Insets top="20.0"/>
+                <Insets top="20.0" />
             </VBox.margin>
         </HBox>
-
+        <TextArea fx:id="outputBox" prefHeight="200.0" prefWidth="350.0" wrapText="true" editable="false">
+            <VBox.margin>
+                <Insets top="20.0" />
+            </VBox.margin>
+        </TextArea>
+        <HBox alignment="CENTER" spacing="10.0">
+            <children>
+                <Button fx:id="backButton" text="Back" onAction="#onBackButtonClick" />
+            </children>
+            <VBox.margin>
+                <Insets top="20.0" />
+            </VBox.margin>
+        </HBox>
     </children>
 </VBox>
