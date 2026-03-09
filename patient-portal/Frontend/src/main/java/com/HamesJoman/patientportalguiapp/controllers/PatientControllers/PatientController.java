@@ -1,5 +1,6 @@
 package com.HamesJoman.patientportalguiapp.controllers.PatientControllers;
 
+import com.HamesJoman.patientportalguiapp.SessionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -61,6 +62,9 @@ public class PatientController {
 
     @FXML
     public void onLogoutButtonClick() {
+        // Wipe session data
+        SessionManager.getInstance().clear();
+        
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/com/HamesJoman/patientportalguiapp/login-view.fxml")
