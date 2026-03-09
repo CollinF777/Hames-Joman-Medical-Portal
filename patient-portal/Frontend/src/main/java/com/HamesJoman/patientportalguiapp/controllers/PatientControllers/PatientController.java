@@ -64,7 +64,7 @@ public class PatientController {
     public void onLogoutButtonClick() {
         // Wipe session data
         SessionManager.getInstance().clear();
-        
+
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/com/HamesJoman/patientportalguiapp/login-view.fxml")
