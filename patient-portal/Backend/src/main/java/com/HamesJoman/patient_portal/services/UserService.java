@@ -1,5 +1,6 @@
 package com.HamesJoman.patient_portal.services;
 
+import com.HamesJoman.patient_portal.dto.ChangePasswordRequest;
 import com.HamesJoman.patient_portal.dto.UserRequest;
 import com.HamesJoman.patient_portal.models.*;
 import com.HamesJoman.patient_portal.repositories.AppointmentRepository;
@@ -121,6 +122,23 @@ public class UserService {
         }
 
         return userRepository.save(existing);
+    }
+
+    /**
+     * Changes a users password (meant for doctors and patients)
+     *
+     * @param id The users ID
+     * @param request DTO that contains both current and new password
+     */
+    public void changePassword(int id, ChangePasswordRequest request) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Incorrect current password");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
     }
 
     /**
