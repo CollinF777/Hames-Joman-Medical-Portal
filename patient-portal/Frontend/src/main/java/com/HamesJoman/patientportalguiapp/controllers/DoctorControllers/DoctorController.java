@@ -19,6 +19,9 @@ import java.net.http.HttpResponse;
 public class DoctorController {
 
     @FXML
+    private Label welcomeLabel;
+
+    @FXML
     private StackPane contentStack;
 
     @FXML
@@ -47,7 +50,7 @@ public class DoctorController {
 
     @FXML
     public void initialize() {
-        // Initialization logic if required
+        welcomeLabel.setText("Welcome back, Dr. " + SessionManager.getInstance().getFullName() + "!");
     }
 
     @FXML

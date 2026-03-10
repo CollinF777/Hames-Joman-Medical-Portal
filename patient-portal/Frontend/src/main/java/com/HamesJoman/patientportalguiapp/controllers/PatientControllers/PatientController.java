@@ -17,6 +17,9 @@ import java.net.http.HttpResponse;
 public class PatientController {
 
     @FXML
+    private Label welcomeLabel;
+
+    @FXML
     private GridPane dashboardPane;
 
     @FXML
@@ -39,6 +42,11 @@ public class PatientController {
 
     @FXML
     private Button logoutButton;
+
+    @FXML
+    public void initialize() {
+        welcomeLabel.setText("Welcome back, " + SessionManager.getInstance().getFullName() + "!");
+    }
 
     @FXML
     private void showDashboard() {
