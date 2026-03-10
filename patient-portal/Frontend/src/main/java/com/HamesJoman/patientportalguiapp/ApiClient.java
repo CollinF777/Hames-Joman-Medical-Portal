@@ -152,6 +152,34 @@ public class ApiClient {
     }
 
     /**
+     * Change the logged in users password
+     * PUT /api/users/{id}/change-password
+     *
+     * @param id The users ID from the session
+     * @param currentPassword The users entered current password
+     * @param newPassword The users new password
+     * @return HttpResponse containing String Response
+     * @throws Exception if request fails
+     */
+    public static HttpResponse<String> changePassword(int id, String currentPassword,
+                                                      String newPassword) throws Exception {
+        /**
+         * JSON request body
+         * Should look like
+         * {"currentPassword": "some input", "newPassword": "some input"}
+         */
+        String json = String.format("{\"currentPassword\": \"%s\", \"newPassword\":\"%s\"}", currentPassword, newPassword);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/users/" + id + "/change-password"))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    /**
      * Delete an existing user
      * PUT /api/users/{id}
      *
