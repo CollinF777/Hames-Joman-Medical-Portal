@@ -153,7 +153,7 @@ public class ApiClient {
 
     /**
      * Change the logged in users password
-     * PUT /api/users/{id}/change-password
+     * PATCH /api/users/{id}/change-password
      *
      * @param id The users ID from the session
      * @param currentPassword The users entered current password
@@ -173,7 +173,7 @@ public class ApiClient {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/users/" + id + "/change-password"))
                 .header("Content-Type", "application/json")
-                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .method("PATCH", HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
         return client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -181,7 +181,7 @@ public class ApiClient {
 
     /**
      * Delete an existing user
-     * PUT /api/users/{id}
+     * DELETE /api/users/{id}
      *
      * @param id user id
      * @return HttpResponse containing String Response
