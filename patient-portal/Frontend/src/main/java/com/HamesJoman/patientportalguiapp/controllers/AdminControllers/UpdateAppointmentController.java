@@ -63,9 +63,6 @@ public class UpdateAppointmentController {
         startMinuteSpinner.setValueFactory(new SpinnerValueFactory.ListSpinnerValueFactory<>(FXCollections.observableArrayList(minutes)));
         endMinuteSpinner.setValueFactory(new SpinnerValueFactory.ListSpinnerValueFactory<>(FXCollections.observableArrayList(minutes)));
 
-        appointmentSelectComboBox.getItems().addAll("Appointment");
-        patientComboBox.getItems().addAll("Patient");
-        doctorComboBox.getItems().addAll("Doctor");
         setEditFieldsDisabled(true);
         loadAppointments();
 
@@ -73,12 +70,12 @@ public class UpdateAppointmentController {
     }
 
     private void onAppointmentSelected() {
-        String selected = appointmentSelectComboBox.getValue().toString();
+        Object selected = appointmentSelectComboBox.getValue();
         if(selected == null){
             return;
         }
 
-        int id = Integer.parseInt(selected.split(" - ")[0].trim());
+        int id = Integer.parseInt(selected.toString().split(" - ")[0].trim());
         selectedAppointmentId = id;
 
         try{
@@ -119,8 +116,11 @@ public class UpdateAppointmentController {
 
                 HttpResponse<String> apptResponse = ApiClient.getAppointmentById("" + selectedAppointmentId);
                 JsonNode appointment = mapper.readTree(apptResponse.body());
-                int currentPatientId = appointment.get("patient").get("id").asInt();
-                int currentDoctorId = appointment.get("doctor").get("id").asInt();
+                JsonNode patientNode = appointment.get("patient");
+                JsonNode doctorNode = appointment.get("doctor");
+
+                int currentPatientId = (patientNode == null || patientNode.isNull()) ? -1 : patientNode.get("id").asInt();
+                int currentDoctorId = (doctorNode == null || doctorNode.isNull()) ? -1 : doctorNode.get("id").asInt();
 
                 String currentPatient = "";
                 String currentDoctor = "";
@@ -171,8 +171,10 @@ public class UpdateAppointmentController {
 
                 for(JsonNode appointment: appointments){
                     int id = appointment.get("id").asInt();
-                    String patientName = appointment.get("patient").get("lastName").asText();
-                    String doctorName = appointment.get("doctor").get("lastName").asText();
+                    JsonNode patientNode = appointment.get("patient");
+                    JsonNode doctorNode = appointment.get("doctor");
+                    String patientName = (patientNode == null || patientNode.isNull()) ? "Deleted" : patientNode.get("lastName").asText();
+                    String doctorName = (doctorNode == null || doctorNode.isNull()) ? "Deleted" : doctorNode.get("lastName").asText();
                     items.add(id + " - " + patientName + "/" + doctorName);
                 }
 
@@ -244,7 +246,7 @@ public class UpdateAppointmentController {
                 setEditFieldsDisabled(true);
             }
             else{
-                actionText.setText("Update failed on appointment: " + response.statusCode());
+                actionText.setText("Update failed: " + response.statusCode() + " - " + response.body());
             }
         } catch (Exception e){
             actionText.setText("Couldn't connect to server");
