@@ -92,6 +92,7 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/com/HamesJoman/patientportalguiapp/" + fxmlFile)
             );
+            System.out.println("/com/HamesJoman/patientportalguiapp/" + fxmlFile);
             Scene scene = new Scene(loader.load());
             Stage stage = (Stage) usernameField.getScene().getWindow();
             stage.setTitle(title);
