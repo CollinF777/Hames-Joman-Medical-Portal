@@ -219,6 +219,22 @@ public class ApiClient {
     }
 
     /**
+     * Fetch a single appointment by ID
+     * GET /api/appointments/{id}
+     *
+     * @return HttpResponse containing String Response
+     * @throws Exception if request fails
+     */
+    public static HttpResponse<String> getAppointmentById(String id) throws Exception{
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/appointments/" + id))
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    /**
      * Get all appointments for a given patient
      * GET /api/appointments/patient/{patientId}
      *
