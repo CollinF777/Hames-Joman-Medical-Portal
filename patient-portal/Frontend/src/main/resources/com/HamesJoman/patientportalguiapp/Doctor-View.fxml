@@ -14,7 +14,7 @@
             <Insets bottom="10" left="10" right="10" top="10" />
          </padding>
          <children>
-            <Label text="Welcome back!">
+            <Label fx:id="welcomeLabel" text="Welcome back!">
                <font>
                   <Font size="28" />
                </font>
@@ -114,22 +114,23 @@
                <VBox alignment="CENTER" prefWidth="284.0" spacing="5" GridPane.rowIndex="0">
                   <children>
                      <Label text="Current Password:" />
-                     <PasswordField prefWidth="200" />
+                     <PasswordField fx:id="currentPasswordField" prefWidth="200" />
                   </children>
                </VBox>
 
                <VBox alignment="CENTER" spacing="5" GridPane.rowIndex="1">
                   <children>
                      <Label text="New Password:" />
-                     <PasswordField prefWidth="200" />
+                     <PasswordField fx:id="newPasswordField" prefWidth="200" />
                   </children>
                </VBox>
 
                <VBox alignment="CENTER" spacing="5" GridPane.rowIndex="2">
                   <children>
                      <Label text="Confirm New Password:" />
-                     <PasswordField prefWidth="200" />
-                     <Button mnemonicParsing="false" text="Confirm" />
+                     <PasswordField fx:id="confirmPasswordField" prefWidth="200" />
+                     <Button mnemonicParsing="false" text="Confirm" onAction="#onChangePasswordButtonClick"/>
+                     <Label fx:id="passwordStatusLabel" wrapText="true" maxWidth="200.0" />
                   </children>
                </VBox>
             </children>

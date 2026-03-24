@@ -1,5 +1,6 @@
 package com.HamesJoman.patient_portal.controllers;
 
+import com.HamesJoman.patient_portal.dto.ChangePasswordRequest;
 import com.HamesJoman.patient_portal.dto.UserRequest;
 import com.HamesJoman.patient_portal.models.*;
 import com.HamesJoman.patient_portal.services.UserService;
@@ -87,6 +88,10 @@ public class UserController {
      * PUT /api/users/{id}
      * Updates an existing user's details.
      * If password is blank, it is left unchanged.
+     *
+     * @param id users id
+     * @param request UserRequest DTO containing user details (firstName, lastName, username, password, role)
+     * @return Response entity with updated user
      */
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody UserRequest request) {
@@ -97,6 +102,38 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
+    /**
+     * PATCH /api/users/{id}/change-password
+     * Changes a users current password to a new one
+     * Was PUT before, changed to PATCH because no need to fully replace the user each time
+     *
+     * @param id Users id
+     * @param request ChangePasswordRequest with details on the new and prior passwords
+     * @return A response entity to show the password has successfully changed or a status error
+     */
+    @PatchMapping("/{id}/change-password")
+    public ResponseEntity<String> changePassword(@PathVariable int id, @RequestBody ChangePasswordRequest request) {
+        if (request.getCurrentPassword() == null || request.getCurrentPassword().isBlank() ||
+                request.getNewPassword() == null || request.getNewPassword().isBlank()) {
+            return ResponseEntity.badRequest().body("Fill in all fields please");
+        }
+
+        try {
+            userService.changePassword(id, request);
+            return ResponseEntity.ok("Password changed successfully");
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage() != null && e.getMessage().contains("not found")) {
+                return ResponseEntity.status(404).body(e.getMessage());
+            }
+            if (e.getMessage() != null && e.getMessage().contains("Incorrect")) {
+                return ResponseEntity.status(401).body(e.getMessage());
+            }
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return ResponseEntity.status(500).body("Server error while changing password");
+        }
+    }
     /**
      * DELETE /api/users/{id}
      * Deletes a user based off their id

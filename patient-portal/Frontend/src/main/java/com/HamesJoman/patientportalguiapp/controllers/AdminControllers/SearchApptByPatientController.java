@@ -97,12 +97,14 @@ public class SearchApptByPatientController {
                     String status = apt.get("status").asText();
                     int aptId = apt.get("id").asInt();
 
-                    JsonNode doctor = apt.get("doctor");
-                    String doctorName = doctor.get("firstName").asText() + " " + doctor.get("lastName").asText();
-                    int doctorId = doctor.get("id").asInt();
+                    JsonNode doctorNode = apt.get("doctor");
+                    // Doctor may be null if deleted
+                    String doctorInfo = (doctorNode == null || doctorNode.isNull())
+                            ? "Deleted Doctor" : doctorNode.get("firstName").asText() + " " +
+                            doctorNode.get("lastName").asText() + " (ID: " + doctorNode.get("id").asInt() + ")";
 
-                    s.append(String.format("ID: %d | %s | %s–%s | Doctor: %s (ID: %d) | Status: %s%n",
-                            aptId, date, startTime, endTime, doctorName, doctorId, status));
+                    s.append(String.format("ID: %d | %s | %s–%s | Doctor: %s | Status: %s%n",
+                            aptId, date, startTime, endTime, doctorInfo, status));
                 }
                 outputBox.setText(s.toString());
             }

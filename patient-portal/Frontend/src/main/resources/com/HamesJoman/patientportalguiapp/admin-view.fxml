@@ -5,10 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="480.0" prefWidth="320.0"
-            xmlns="http://javafx.com/javafx/17.0.12"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.HamesJoman.patientportalguiapp.controllers.AdminControllers.AdminController">
+<BorderPane prefHeight="480.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.HamesJoman.patientportalguiapp.controllers.AdminControllers.AdminController">
     <top>
         <VBox alignment="CENTER" style="-fx-background-color: #f8f8f8; -fx-border-color: #dddddd; -fx-border-width: 0 0 1 0;">
             <padding>
@@ -40,12 +37,13 @@
                         <Font size="11.0" />
                     </font>
                 </Label>
-                <Button text="Search Appointments by Patient" onAction="#onPatientSearchAptButtonClick" maxWidth="Infinity" />
-                <Button text="Search Appointments by Doctor" onAction="#onDoctorSearchAptButtonClick" maxWidth="Infinity" />
-                <Button text="New Appointment" onAction="#onNewAptButtonClick" maxWidth="Infinity" />
+                <Button maxWidth="Infinity" onAction="#onPatientSearchAptButtonClick" text="Search Appointments by Patient" />
+                <Button maxWidth="Infinity" onAction="#onDoctorSearchAptButtonClick" text="Search Appointments by Doctor" />
+                <Button maxWidth="Infinity" onAction="#onNewAptButtonClick" text="New Appointment" />
+            <Button maxWidth="Infinity" onAction="#onUpdateAptButtonClick" text="Update Appointment" />
                 <Separator>
                     <VBox.margin>
-                        <Insets top="5" bottom="5" />
+                        <Insets bottom="5" top="5" />
                     </VBox.margin>
                 </Separator>
                 <Label text="Users" textFill="#555555">
@@ -53,9 +51,9 @@
                         <Font size="11.0" />
                     </font>
                 </Label>
-                <Button text="New User" onAction="#onNewUserButtonClick" maxWidth="Infinity" />
-                <Button text="Update User" onAction="#onUpdateUserButtonClick" maxWidth="Infinity" />
-                <Button text="Delete User" onAction="#onDeleteUserButtonClick" maxWidth="Infinity" />
+                <Button maxWidth="Infinity" onAction="#onNewUserButtonClick" text="New User" />
+                <Button maxWidth="Infinity" onAction="#onUpdateUserButtonClick" text="Update User" />
+                <Button maxWidth="Infinity" onAction="#onDeleteUserButtonClick" text="Delete User" />
             </children>
         </VBox>
     </center>
@@ -65,8 +63,8 @@
                 <Insets bottom="20" left="30" right="30" top="10" />
             </padding>
             <children>
-                <Button text="Log Out" onAction="#onLogoutButtonClick" prefWidth="120" />
-                <Button text="Exit Application" onAction="#onExitButtonClick" prefWidth="130" />
+                <Button onAction="#onLogoutButtonClick" prefWidth="120" text="Log Out" />
+                <Button onAction="#onExitButtonClick" prefWidth="130" text="Exit Application" />
             </children>
         </HBox>
     </bottom>

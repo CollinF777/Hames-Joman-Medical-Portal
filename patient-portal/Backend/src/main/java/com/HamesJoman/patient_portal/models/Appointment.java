@@ -19,12 +19,31 @@ public class Appointment {
     @Column(nullable = false)
     private LocalTime endTime;
     // Many appointments can belong to one patient
-    @ManyToOne
-    @JoinColumn(name = "patient_id", nullable = false)
+    /**
+     * Added a lazy fetch: we don't need the full Patient object just to cancel an appointment.
+     * Basically, we are just preventing an appointment pointing to a user that no longer exists
+     * If we did that then we'll have issues with deleting users
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    // Joins are just sql commands now cuz I couldn't figure out how to get delete user to work otherwise
+    @JoinColumn(
+            name = "patient_id",
+            nullable = true,
+            foreignKey = @ForeignKey(
+                    name = "FK_appointments_patient",
+                    foreignKeyDefinition = "FOREIGN KEY (patient_id) REFERENCES users(id) ON DELETE SET NULL"
+            )
+    )
     private Patient patient;
     // Many appointments can belong to one doctor
-    @ManyToOne
-    @JoinColumn(name = "doctor_id", nullable = false)
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "doctor_id",
+            nullable = true,
+            foreignKey = @ForeignKey(
+                    name = "FK_appointments_doctor",
+                    foreignKeyDefinition = "FOREIGN KEY (doctor_id) REFERENCES users(id) ON DELETE SET NULL"
+            ))
     private Doctor doctor;
     // Stores enum in database as ACTIVE or CANCELLED
     @Enumerated(EnumType.STRING)

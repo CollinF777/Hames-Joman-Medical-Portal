@@ -1,6 +1,7 @@
 package com.HamesJoman.patientportalguiapp.controllers;
 
 import com.HamesJoman.patientportalguiapp.ApiClient;
+import com.HamesJoman.patientportalguiapp.SessionManager;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
@@ -42,6 +43,15 @@ public class LoginController {
                 JsonNode json = mapper.readTree(response.body());
                 // So this pulls the role field from the JSON tree
                 String role = json.get("role").asText();
+
+                // Populate session
+                SessionManager.getInstance().setUser(
+                    json.get("id").asInt(),
+                    json.get("firstName").asText(),
+                    json.get("lastName").asText(),
+                    json.get("username").asText(),
+                    json.get("role").asText()
+                );
                 openDashboard(role);
             }
             else if (response.statusCode() == 401) {

@@ -152,8 +152,36 @@ public class ApiClient {
     }
 
     /**
+     * Change the logged in users password
+     * PATCH /api/users/{id}/change-password
+     *
+     * @param id The users ID from the session
+     * @param currentPassword The users entered current password
+     * @param newPassword The users new password
+     * @return HttpResponse containing String Response
+     * @throws Exception if request fails
+     */
+    public static HttpResponse<String> changePassword(int id, String currentPassword,
+                                                      String newPassword) throws Exception {
+        /**
+         * JSON request body
+         * Should look like
+         * {"currentPassword": "some input", "newPassword": "some input"}
+         */
+        String json = String.format("{\"currentPassword\": \"%s\", \"newPassword\":\"%s\"}", currentPassword, newPassword);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/users/" + id + "/change-password"))
+                .header("Content-Type", "application/json")
+                .method("PATCH", HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    /**
      * Delete an existing user
-     * PUT /api/users/{id}
+     * DELETE /api/users/{id}
      *
      * @param id user id
      * @return HttpResponse containing String Response
@@ -187,6 +215,22 @@ public class ApiClient {
                 .GET()
                 .build();
 
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    /**
+     * Fetch a single appointment by ID
+     * GET /api/appointments/{id}
+     *
+     * @return HttpResponse containing String Response
+     * @throws Exception if request fails
+     */
+    public static HttpResponse<String> getAppointmentById(String id) throws Exception{
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/appointments/" + id))
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
         return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
