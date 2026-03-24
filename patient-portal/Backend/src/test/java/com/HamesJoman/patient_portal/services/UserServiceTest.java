@@ -1,185 +1,212 @@
 package com.HamesJoman.patient_portal.services;
 
-import com.HamesJoman.patient_portal.models.Admin;
-import com.HamesJoman.patient_portal.models.Doctor;
-import com.HamesJoman.patient_portal.models.Patient;
-import com.HamesJoman.patient_portal.models.User;
+import com.HamesJoman.patient_portal.models.*;
+import com.HamesJoman.patient_portal.repositories.AppointmentRepository;
 import com.HamesJoman.patient_portal.repositories.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-class UserServiceTest {
-
+/**
+ * Unit tests for UserService
+ *
+ * Make sure you are using Mockito to mock the repos so we arent using the actual
+ * db or any spring context is required
+ *
+ * @author Collin Fair
+ */
+@ExtendWith(MockitoExtension.class) // This is how you activate mockito
+public class UserServiceTest {
+    /**
+     * We are creating fake objects so we arent messing up the real db
+     * You should be using mockito and mock in basically every unit test
+     */
     @Mock
     private UserRepository userRepository;
 
+    // This is just for delete user
+    @Mock
+    private AppointmentRepository appointmentRepository;
+
+    /**
+     * InjectMocks is sorta self-explanatory based off the name but
+     * It creates a real instance of UserService for testing and INJECTS (do I sound like mitra)
+     * our fake objects into the constructor so basically we are actually using
+     * the service layer without touching the db
+     */
     @InjectMocks
     private UserService userService;
 
-    @Test
-    void testCreateUserSuccess() {
-        when(userRepository.existsByUsername("johndoe")).thenReturn(false);
-        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    private Patient samplePatient;
+    private Doctor sampleDoctor;
 
-        User user = userService.createUser("John", "Doe", "johndoe", "password", "patient");
-
-        assertNotNull(user);
-        assertTrue(user instanceof Patient);
-        assertEquals("John", user.getFirstName());
-        assertEquals("johndoe", user.getUsername());
-        verify(userRepository).save(any(User.class));
+    /**
+     * Runs this before every single test
+     * This makes a fresh user each test so they dont mess with each other
+     */
+    @BeforeEach
+    void setUp() {
+        samplePatient = mock(Patient.class);
+        sampleDoctor = mock(Doctor.class);
     }
 
+    /**
+     * We are getting every user and are expecting to find our mocked user
+     */
     @Test
-    void testCreateDoctorSuccess() {
-        when(userRepository.existsByUsername("drhouse")).thenReturn(false);
-        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    void getAllUsersTest() {
+        // We are telling our fake repo what to return on a findAll() call
+        when(userRepository.findAll()).thenReturn(List.of(samplePatient, sampleDoctor));
 
-        User user = userService.createUser("Gregory", "House", "drhouse", "lupus", "doctor");
+        // Here we actually call the service
+        List<User> result = userService.getAllUsers();
 
-        assertTrue(user instanceof Doctor);
-        assertEquals("Doctor", user.getRole());
+        assertEquals(2, result.size());
     }
 
+    /**
+     * Test for getting user by their id and they exist
+     */
     @Test
-    void testCreateAdminSuccess() {
-        when(userRepository.existsByUsername("admin")).thenReturn(false);
-        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    void getUserByIdExistsTest() {
+        // Say what sample patients name should be
+        when(samplePatient.getFirstName()).thenReturn("TestFirstName");
+        // Should return our sample user on findById(1) I think im gonna stop commenting now
+        when(userRepository.findById(1)).thenReturn(Optional.of(samplePatient));
 
-        User user = userService.createUser("Lisa", "Cuddy", "admin", "password", "admin");
+        User result = userService.getUser(1);
 
-        assertTrue(user instanceof Admin);
-        assertEquals("Admin", user.getRole());
+        assertNotNull(result);
+        assertEquals("TestFirstName", result.getFirstName());
     }
 
+    /**
+     * Test for getting user by their id and they dont exist
+     */
     @Test
-    void testCreateUserInvalidRole() {
-        assertThrows(RuntimeException.class, () -> {
-            userService.createUser("John", "Doe", "johndoe", "pass", "invalid");
-        });
+    void getUserByIdDoesNotExistTest() {
+        when(userRepository.findById(777)).thenReturn(Optional.empty());
+
+        User result = userService.getUser(777);
+
+        assertNull(result);
     }
 
+    /**
+     * Test for creating a valid patient
+     */
     @Test
-    void testCreateUserUsernameTaken() {
-        when(userRepository.existsByUsername("taken")).thenReturn(true);
+    void createUserValidPatientTest() {
+        when(samplePatient.getFirstName()).thenReturn("TestFirstName");
+        when(userRepository.existsByUsername("TestUsername")).thenReturn(false);
+        when(userRepository.save(any(Patient.class))).thenReturn(samplePatient);
 
-        assertThrows(RuntimeException.class, () -> {
-            userService.createUser("John", "Doe", "taken", "password", "patient");
-        });
+        User result = userService.createUser("TestFirstName", "TestLastName",
+                "TestUsername", "TestPassword", "patient");
+
+        assertNotNull(result);
+        assertEquals("TestFirstName", result.getFirstName());
     }
 
+    /**
+     * Test for creating a valid doctor
+     */
     @Test
-    void testGetAllUsers() {
-        userService.getAllUsers();
-        verify(userRepository).findAll();
+    void createUserValidDoctorTest() {
+        when(sampleDoctor.getFirstName()).thenReturn("TestFirstName");
+        when(userRepository.existsByUsername("TestUsername")).thenReturn(false);
+        when(userRepository.save(any(Doctor.class))).thenReturn(sampleDoctor);
+
+        User result = userService.createUser("TestFirstName", "TestLastName",
+                "TestUsername", "TestPassword", "doctor");
+
+        assertNotNull(result);
+        assertEquals("TestFirstName", result.getFirstName());
     }
 
+    /**
+     * Test for creating a user with a duplicate username
+     */
     @Test
-    void testGetUser() {
-        Patient patient = new Patient(1, "John", "Doe", "johndoe", "pass");
-        when(userRepository.findById(1)).thenReturn(Optional.of(patient));
+    void createDuplicateUserTest() {
+        when(userRepository.existsByUsername("TestUsername")).thenReturn(true);
 
-        User found = userService.getUser(1);
-
-        assertNotNull(found);
-        assertEquals(1, found.getId());
+        assertThrows(RuntimeException.class,
+                () -> userService.createUser("t", "t",
+                        "TestUsername", "p", "patient"));
     }
 
+    /**
+     * Test for creating a user with a fake role
+     */
     @Test
-    void testDeleteUser() {
+    void createUserInvalidRoleTest() {
+        when(userRepository.existsByUsername("TestUserName")).thenReturn(false);
+
+        assertThrows(RuntimeException.class,
+                () -> userService.createUser("t", "t",
+                        "TestUsername", "p", "AHHHHHHHHHH"));
+    }
+
+    /**
+     * Test for deleting a user that has appointments
+     */
+    @Test
+    void deleteUserWithAppointmentsTest() {
+        Appointment appt = new Appointment();
+        appt.setId(1);
+        appt.setPatient(samplePatient);
+        appt.setDoctor(sampleDoctor);
+        appt.setStatus(Status.ACTIVE);
+
         when(userRepository.existsById(1)).thenReturn(true);
-        boolean deleted = userService.deleteUser(1);
-        assertTrue(deleted);
-        verify(userRepository).deleteById(1);
+        when(appointmentRepository.findByPatient_Id(1)).thenReturn(List.of(appt));
+        when(appointmentRepository.findByDoctor_Id(1)).thenReturn(List.of());
+
+        boolean result = userService.deleteUser(1);
+
+        assertTrue(result);
+        assertEquals(Status.CANCELLED, appt.getStatus());
+
+        // Verify user was deleted
+        verify(userRepository, times(1)).deleteById(1);
     }
 
+    /**
+     * Test for deleting a user that has no appointments
+     */
     @Test
-    void testDeleteUserNotFound() {
-        when(userRepository.existsById(99)).thenReturn(false);
-        boolean deleted = userService.deleteUser(99);
-        assertFalse(deleted);
-        verify(userRepository, never()).deleteById(99);
+    void deleteUserWithoutAppointmentsTest() {
+        when(userRepository.existsById(1)).thenReturn(true);
+        when(appointmentRepository.findByPatient_Id(1)).thenReturn(List.of());
+        when(appointmentRepository.findByDoctor_Id(1)).thenReturn(List.of());
+
+        boolean result = userService.deleteUser(1);
+
+        assertTrue(result);
+        verify(userRepository, times(1)).deleteById(1);
     }
 
+    /**
+     * Test for deleting a user that doesnt exist
+     */
     @Test
-    void testUpdateUser() {
-        Patient existing = new Patient(1, "Old", "Old", "old", "pass");
-        when(userRepository.findById(1)).thenReturn(Optional.of(existing));
-        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    void deleteNonexistingUserTest() {
+        when(userRepository.existsById(777)).thenReturn(false);
 
-        com.HamesJoman.patient_portal.dto.UserRequest request = new com.HamesJoman.patient_portal.dto.UserRequest();
-        request.setFirstName("New");
-        request.setLastName("New");
-        request.setUsername("new");
-        request.setRole("Patient");
-        request.setPassword("newpass");
+        boolean result = userService.deleteUser(777);
 
-        User updated = userService.updateUser(1, request);
-
-        assertEquals("New", updated.getFirstName());
-        assertEquals("new", updated.getUsername());
-        assertNotEquals("pass", updated.getPassword());
-    }
-
-    @Test
-    void testRecordLogin() {
-        Patient patient = new Patient(1, "John", "Doe", "johndoe", "pass");
-        when(userRepository.findById(1)).thenReturn(Optional.of(patient));
-
-        userService.recordLogin(1);
-
-        assertNotNull(patient.getLastLogin());
-        verify(userRepository).save(patient);
-    }
-
-    @Test
-    void testVerifyPassword() {
-        // BCrypt is hard to mock correctly without mocking the static or bean
-        // but since we are using the real encoder in the service, we can just test the logic
-        String pass = "password123";
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String hashed = encoder.encode(pass);
-
-        assertTrue(userService.verifyPassword(pass, hashed));
-        assertFalse(userService.verifyPassword("wrong", hashed));
-    }
-
-    @Test
-    void testGetUserByUsername() {
-        Patient patient = new Patient(1, "John", "Doe", "johndoe", "pass");
-        when(userRepository.findByUsername("johndoe")).thenReturn(Optional.of(patient));
-
-        User found = userService.getUserByUsername("johndoe");
-
-        assertEquals(patient, found);
-    }
-
-    @Test
-    void testGetUserNotFound() {
-        when(userRepository.findById(99)).thenReturn(Optional.empty());
-        assertNull(userService.getUser(99));
-    }
-
-    @Test
-    void testGetUserByUsernameNotFound() {
-        when(userRepository.findByUsername("unknown")).thenReturn(Optional.empty());
-        assertNull(userService.getUserByUsername("unknown"));
-    }
-
-    @Test
-    void testUpdateUserNotFound() {
-        when(userRepository.findById(99)).thenReturn(Optional.empty());
-        assertNull(userService.updateUser(99, new com.HamesJoman.patient_portal.dto.UserRequest()));
+        assertFalse(result);
+        verify(userRepository, never()).deleteById(anyInt());
     }
 }

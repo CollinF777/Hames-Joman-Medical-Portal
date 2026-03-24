@@ -1,14 +1,19 @@
 package com.HamesJoman.patient_portal.services;
 
+import com.HamesJoman.patient_portal.dto.ChangePasswordRequest;
 import com.HamesJoman.patient_portal.dto.UserRequest;
 import com.HamesJoman.patient_portal.models.*;
+import com.HamesJoman.patient_portal.repositories.AppointmentRepository;
 import com.HamesJoman.patient_portal.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Service layer for managing User entities.
@@ -29,6 +34,8 @@ public class UserService {
 
     // For password hashing
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     /**
      * Creates a new user with the specified details and role.
@@ -118,21 +125,66 @@ public class UserService {
     }
 
     /**
+     * Changes a users password (meant for doctors and patients)
+     *
+     * @param id The users ID
+     * @param request DTO that contains both current and new password
+     */
+    public void changePassword(int id, ChangePasswordRequest request) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Incorrect current password");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+    }
+
+    /**
      * Deletes a user from the db by their ID.
      *
-     * If like web app, we wanna make this not a full delete like it currently is
-     * but instead make the user inactive, or maybe that was just appointments
-     * if you read this then remind me to ask Jenny
+     * Fixed so now any active appointments that the user has now get cancelled
+     * upon deletion of user which is what was causing errors before
+     * If an appointment is already finished or cancelled then its left untouched
+     *
+     * We add transactional because if either deleting the user or cancelling
+     * the appointment fails then both are rolled back otherwise we could get a
+     * user that failed to delete but all appointments for them are canceled
      *
      * @param id The ID of the user to delete
      * @return true if a user was deleted, false if no user with that ID exists
      */
+    @Transactional
     public boolean deleteUser(int id) {
-       if (userRepository.existsById(id)) {
-           userRepository.deleteById(id);
-           return true;
-       }
-       return false;
+        if (!userRepository.existsById(id)) {
+            return false;
+        }
+
+        /**
+         * Gathers every active appointment for a user
+         *
+         * We use Stream.concat as this basically acts like a loop to pull
+         * every appointment regardless of their role i.e. if they're a patient or doctor
+         *
+         * S/O Brian Keenan for teaching us the wonders of stream (just a more complicated
+         * for loop)
+         */
+        List<Appointment> toCancel = Stream.concat(
+                appointmentRepository.findByPatient_Id(id).stream(),
+                appointmentRepository.findByDoctor_Id(id).stream()
+        ).filter(apt -> apt.getStatus() == Status.ACTIVE).collect(Collectors.toList());
+
+        // Cancel all appointments
+        if (!toCancel.isEmpty()) {
+            toCancel.forEach(apt -> apt.setStatus(Status.CANCELLED));
+            appointmentRepository.saveAll(toCancel);
+            // Flush any cancellations now to prevent DB giving errors about updating with a non existent user
+            appointmentRepository.flush();
+        }
+
+        userRepository.deleteById(id);
+        return true;
     }
 
     /**
