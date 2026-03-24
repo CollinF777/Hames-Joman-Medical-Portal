@@ -11,11 +11,11 @@ import jakarta.persistence.*;
  * @author Collin Fair
  */
 @Entity // Marks as DB table
-@Table(name = "users") // Guess.
+@Table(name = "portal_user")
 // Puts all users into one table instead of diff tables for diff roles
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 // Creates the correct object based on the user-type aka their role
-@DiscriminatorColumn(name = "user-type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class User {
 
     @Id // PK
