@@ -17,6 +17,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -89,6 +90,24 @@ public class DoctorController {
         } catch (Exception e) {
             appointmentList.add("Couldn't connect to server");
             appointmentListView.setItems(appointmentList);
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void onChangePasswordWindowOpen() {
+        try {
+            // Adjust the path to where you saved your new FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/HamesJoman/patientportalguiapp/change-password.fxml"));
+            Scene scene = new Scene(loader.load());
+            Stage stage = new Stage();
+
+            stage.setTitle("Account Security");
+            stage.initModality(Modality.APPLICATION_MODAL); // Locks the dashboard until closed
+            stage.setResizable(false);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

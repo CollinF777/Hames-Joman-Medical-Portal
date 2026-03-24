@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="615.0" prefWidth="638.0" spacing="20" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.HamesJoman.patientportalguiapp.controllers.DoctorControllers.DoctorController">
+<VBox prefHeight="615.0" prefWidth="701.0" spacing="20" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.HamesJoman.patientportalguiapp.controllers.DoctorControllers.DoctorController">
    <!-- ================= TOP HEADER ================= -->
       <HBox alignment="CENTER_LEFT" spacing="20">
          <padding>
@@ -23,16 +23,16 @@
             <children>
       
                   <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="26.0" prefWidth="154.0" text="Log out" />
-               <Button id="changePasswordButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="156.0" text="Change Password" />
+               <Button id="changePasswordButton" onAction="#onChangePasswordWindowOpen" mnemonicParsing="false" prefHeight="26.0" prefWidth="156.0" text="Change Password" />
             </children>
          </VBox>
          </children>
       </HBox>
 
    <HBox alignment="CENTER" prefHeight="40.0" prefWidth="604.0" spacing="40">
-      <VBox prefHeight="40.0" prefWidth="217.0">
+      <VBox prefHeight="40.0" prefWidth="371.0">
          <Label style="-fx-font-weight: bold; -fx-text-fill: gray;" text="Next Appointment" />
-         <Label fx:id="nextApptLabel" prefHeight="22.0" prefWidth="236.0" style="-fx-font-size: 16px;" text="Loading..." />
+         <Label fx:id="nextApptLabel" prefHeight="22.0" prefWidth="457.0" style="-fx-font-size: 16px;" text="Loading..." />
       </VBox>
 
       <Separator orientation="VERTICAL" prefHeight="40.0" prefWidth="0.0" />
@@ -50,5 +50,4 @@
    <padding>
       <Insets bottom="20" left="20" right="20" top="20" />
    </padding>
-
 </VBox>
