@@ -19,29 +19,201 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Controller that handles all logic for the doctor view
+ *
+ * @author Collin Fair and Liam Callahan
+ */
 public class DoctorController {
 
-    @FXML public DatePicker filterFromDate;
-    @FXML public DatePicker filterToDate;
-    @FXML public ComboBox filterPatientComboBox;
     @FXML private Label nextApptLabel;
     @FXML private Label totalApptsLabel;
-    @FXML private ListView<String> appointmentListView;
+    @FXML private ListView appointmentListView;
     @FXML private Label welcomeLabel;
     @FXML private Button logoutButton;
+    @FXML
+    private ComboBox<String> filterComboBox;
     private final ObjectMapper mapper = new ObjectMapper();
     private final ObservableList<String> appointmentList = FXCollections.observableArrayList();
+    private JsonNode allAppointments;
 
 
     @FXML
     public void initialize() {
         welcomeLabel.setText("Welcome back, Dr. " + SessionManager.getInstance().getFullName() + "!");
-        updateSearchResults();
+
+        // Set up filter
+        filterComboBox.setItems(FXCollections.observableArrayList(
+                "Today", "This Week", "This Month", "All Time"
+        ));
+        filterComboBox.setValue("Today");
+        filterComboBox.setOnAction(e -> applyFilter());
+
+        // Update appointment info
+        try {
+            HttpResponse<String> response = ApiClient.getAppointmentsByDoctor(SessionManager.getInstance().getUserId());
+
+            if (response.statusCode() == 200) {
+                allAppointments = mapper.readTree(response.body());
+
+                if (allAppointments.isEmpty()) {
+                    nextApptLabel.setText("No Upcoming Appointments");
+                    totalApptsLabel.setText("0 Appointments");
+                    return;
+                }
+
+                // Populate list based on selected filter
+                applyFilter();
+                updateNextAppointment();
+            }
+            else {
+                appointmentList.add("Failed to fetch appointments: " + response.statusCode() + "\n" + response.body());
+                appointmentListView.setItems(appointmentList);
+            }
+        } catch (Exception e) {
+            appointmentList.add("Couldn't connect to server");
+            appointmentListView.setItems(appointmentList);
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * Filter apts based off the users filter selection
+     */
+    private void applyFilter() {
+        if (allAppointments == null) {
+            return;
+        }
+        appointmentList.clear();
+
+        LocalDate today = LocalDate.now();
+        String filter = filterComboBox.getValue();
+
+        // Set week range (Sunday-Saturday)
+        LocalDate startOfWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+        LocalDate endOfWeek = startOfWeek.plusDays(6);
+
+        List<JsonNode> filteredList = new ArrayList<>();
+
+        for (JsonNode apt : allAppointments) {
+            LocalDate date = LocalDate.parse(apt.get("date").asText());
+
+            /**
+             * Okay so I feel like I should explain this since most of you probably havent used switch for a boolean
+             * This is sort of similar to javascript arrow functions if you know that
+             * But basically you do a normal switch but instead of needing a break to not fall through
+             * the switch, the result just gets stored into the variable
+             * Also instead of using colons : you use an arrow ->
+             * If you have any questions just ask me
+             * If you dont know who made this comment then why are you looking so deep into my code?
+             */
+            boolean include = switch (filter) {
+                case "Today" -> date.equals(today);
+                case "This Week" -> !date.isBefore(startOfWeek) && !date.isAfter(endOfWeek);
+                case "This Month" -> date.getMonth() == today.getMonth() && date.getYear() == today.getYear();
+                default -> true;
+            };
+
+            // If its in the filter, add it
+            if (include) {
+                filteredList.add(apt);
+            }
+        }
+
+        // Sort filtered apts by date and their start time
+        /**
+         * Okay I realize this probably looks scary so I should explain it
+         * This is just using Comparator to compare all our appointments and sort them
+         * a is the appointment and d is the date and t is the start time
+         * I started naming variables like Dan b/c idk if using the same name would cause problems
+         */
+        filteredList.sort(Comparator.comparing(a -> {
+            LocalDate d = LocalDate.parse(a.get("date").asText());
+            LocalTime t = LocalTime.parse(a.get("startTime").asText());
+            return LocalDateTime.of(d, t);
+        }));
+
+        // Populate the view
+        for (JsonNode apt: filteredList) {
+            String startTime = apt.get("startTime").asText();
+            String endTime = apt.get("endTime").asText();
+            String status = apt.get("status").asText();
+            int aptId = apt.get("id").asInt();
+
+            JsonNode patientNode = apt.get("patient");
+            String patientInfo = (patientNode == null || patientNode.isNull()) ? "Deleted Patient"
+                    : patientNode.get("firstName").asText() + " " + patientNode.get("lastName").asText() +
+                    " (ID: " + patientNode.get("id").asInt() + ")";
+
+            appointmentList.add(String.format("ID: %d | %s | %s–%s | Patient: %s | Status: %s",
+                    aptId, apt.get("date").asText(), startTime, endTime, patientInfo, status));
+        }
+
+        appointmentListView.setItems(appointmentList);
+        totalApptsLabel.setText(appointmentList.size() + " Appointments");
+    }
+
+    /**
+     * Update the next upcoming appointment
+     */
+    private void updateNextAppointment() {
+        if (allAppointments == null || allAppointments.isEmpty()) {
+            nextApptLabel.setText("No Upcoming Appointments");
+            return;
+        }
+
+        // Set next appointment
+        LocalDateTime now = LocalDateTime.now();
+        JsonNode nextAppointment = null;
+        LocalDateTime nextAppointmentTime = null;
+
+        for (JsonNode apt : allAppointments) {
+            LocalDate date = LocalDate.parse(apt.get("date").asText());
+            LocalTime start = LocalTime.parse(apt.get("startTime").asText());
+            LocalTime end = LocalTime.parse(apt.get("endTime").asText());
+
+            LocalDateTime aptStart = LocalDateTime.of(date, start);
+            LocalDateTime aptEnd = LocalDateTime.of(date, end);
+
+            // Make sure its not showing past appointments
+            if (aptEnd.isBefore(now)) {
+                continue;
+            }
+
+            // Find the earliest apt coming up
+            if (nextAppointment == null || aptStart.isBefore(nextAppointmentTime)) {
+                nextAppointment = apt;
+                nextAppointmentTime = aptStart;
+            }
+        }
+
+        if (nextAppointment != null) {
+            JsonNode patientNode = nextAppointment.get("patient");
+
+            String patientInfo = (patientNode == null || patientNode.isNull()) ? "Deleted Patient" :
+                    patientNode.get("firstName").asText() + " " + patientNode.get("lastName").asText();
+
+            nextApptLabel.setText(patientInfo + " " + nextAppointment.get("startTime").asText() + " - " +
+                    nextAppointment.get("endTime").asText() + " on " + nextAppointment.get("date").asText());
+        }
+        else {
+            nextApptLabel.setText("No Upcoming Appointments");
+        }
+    }
+
+    /**
+     * Open window on change password click
+     */
     @FXML
     private void onChangePasswordWindowOpen() {
         try {
@@ -60,6 +232,9 @@ public class DoctorController {
         }
     }
 
+    /**
+     * Logout on button click
+     */
     @FXML
     public void onLogoutButtonClick() {
         // Wipe session
@@ -75,86 +250,6 @@ public class DoctorController {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    public void onFiltersChanged() {
-        updateSearchResults();
-    }
-
-    @FXML
-    public void onClearFilters() {
-        filterFromDate.setValue(null);
-        filterToDate.setValue(null);
-        filterPatientComboBox.setValue(null);
-        updateSearchResults();
-    }
-
-    public void updateSearchResults() {
-        // Update appointment info
-        appointmentList.clear();
-        try {
-            HttpResponse<String> response = ApiClient.getAppointmentsByDoctor(SessionManager.getInstance().getUserId());
-            if (response.statusCode() == 200) {
-                JsonNode appointments = mapper.readTree(response.body());
-                if (appointments.isEmpty()) {
-//                    outputBox.setText("This doctor has no appointments");
-                    return;
-                }
-
-                for (JsonNode apt : appointments) {
-                    LocalDate date = LocalDate.parse(apt.get("date").asText());
-                    // Probably more elegant way to do this but it works for now
-                    if ((filterToDate.getValue() == null || date.isBefore(filterToDate.getValue()) || date.isEqual(filterToDate.getValue())) && (filterFromDate.getValue() == null || date.isAfter(filterFromDate.getValue()) || date.isEqual(filterFromDate.getValue()))) {
-                        String startTime = apt.get("startTime").asText();
-                        String endTime = apt.get("endTime").asText();
-                        String status = apt.get("status").asText();
-                        int    aptId = apt.get("id").asInt();
-
-                        JsonNode patientNode = apt.get("patient");
-                        // Patient may be null if deleted
-                        String patientInfo = (patientNode == null || patientNode.isNull())
-                                ? "Deleted Patient" : patientNode.get("firstName").asText() + " " +
-                                patientNode.get("lastName").asText() + " (ID: " + patientNode.get("id").asInt() + ")";
-                        appointmentList.add(String.format("ID: %d | %s | %s–%s | Patient: %s | Status: %s%n",
-                                aptId, date, startTime, endTime, patientInfo, status));
-                    }
-                }
-
-                appointmentListView.setItems(appointmentList);
-                totalApptsLabel.setText(appointmentList.size() + " Total Appointments");
-
-                // Set next appointment
-                int i = 0;
-                while (i < appointments.size() && LocalDate.now().isBefore(
-                        LocalDate.parse(appointments.get(i).get("date").asText())
-                )) {
-                    System.out.println(appointments.get(i));
-                    i++;
-                }
-                i--;
-                System.out.println(i);
-                if (i < appointments.size()) {
-                    JsonNode apt = appointments.get(i);
-                    JsonNode patientNode = apt.get("patient");
-                    String patientInfo = (patientNode == null || patientNode.isNull())
-                            ? "Deleted Patient" : patientNode.get("firstName").asText() + " " +
-                            patientNode.get("lastName").asText();
-                    nextApptLabel.setText((patientInfo + " " + apt.get("startTime").toString() + " - " + apt.get("endTime")).replace("\"",""));
-                } else {
-                    nextApptLabel.setText("No Upcoming Appointments");
-                }
-
-            }
-            else {
-                appointmentList.add("Failed to fetch appointments: " + response.statusCode() + "\n" + response.body());
-                appointmentListView.setItems(appointmentList);
-            }
-        } catch (Exception e) {
-            appointmentList.add("Couldn't connect to server");
-            appointmentListView.setItems(appointmentList);
             e.printStackTrace();
         }
     }

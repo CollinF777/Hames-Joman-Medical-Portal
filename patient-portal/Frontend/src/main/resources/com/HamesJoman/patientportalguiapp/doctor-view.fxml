@@ -21,6 +21,7 @@
          <Region HBox.hgrow="ALWAYS" />
          <VBox prefHeight="52.0" prefWidth="150.0">
             <children>
+
                <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="26.0" prefWidth="154.0" text="Log out" />
                <Button id="changePasswordButton" onAction="#onChangePasswordWindowOpen" mnemonicParsing="false" prefHeight="26.0" prefWidth="156.0" text="Change Password" />
             </children>
@@ -28,7 +29,6 @@
       </children>
    </HBox>
 
-   <!-- ================= STATS ROW ================= -->
    <HBox alignment="CENTER" prefHeight="40.0" prefWidth="604.0" spacing="40">
       <VBox prefHeight="40.0" prefWidth="371.0">
          <Label style="-fx-font-weight: bold; -fx-text-fill: gray;" text="Next Appointment" />
@@ -42,41 +42,11 @@
       </VBox>
    </HBox>
 
-   <!-- ================= FILTERS ================= -->
-   <VBox spacing="8">
-      <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Filters" />
-
-      <HBox alignment="CENTER_LEFT" spacing="16">
-
-         <!-- Date From -->
-         <VBox spacing="4">
-            <Label style="-fx-font-size: 12px; -fx-text-fill: gray;" text="From" />
-            <DatePicker fx:id="filterFromDate" onAction="#onFiltersChanged" promptText="Min date" prefWidth="160.0" />
-         </VBox>
-
-         <!-- Date To -->
-         <VBox spacing="4">
-            <Label style="-fx-font-size: 12px; -fx-text-fill: gray;" text="To" />
-            <DatePicker fx:id="filterToDate" onAction="#onFiltersChanged" promptText="Max date" prefWidth="160.0" />
-         </VBox>
-
-         <!-- Patient -->
-         <VBox spacing="4" HBox.hgrow="ALWAYS">
-            <Label style="-fx-font-size: 12px; -fx-text-fill: gray;" text="Patient" />
-            <ComboBox fx:id="filterPatientComboBox" onAction="#onFiltersChanged" promptText="All patients" maxWidth="Infinity" HBox.hgrow="ALWAYS" />
-         </VBox>
-
-         <!-- Clear button -->
-         <VBox alignment="BOTTOM_LEFT" spacing="4">
-            <Label style="-fx-font-size: 12px; -fx-text-fill: transparent;" text="x" />
-            <Button fx:id="clearFiltersButton" mnemonicParsing="false" onAction="#onClearFilters" prefHeight="26.0" prefWidth="80.0" text="Clear" />
-         </VBox>
-
-      </HBox>
-   </VBox>
-
-   <!-- ================= SCHEDULE LIST ================= -->
    <VBox spacing="10" VBox.vgrow="ALWAYS">
+      <HBox alignment="CENTER_LEFT" spacing="10">
+         <Label text="Filter:" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+         <ComboBox fx:id="filterComboBox" prefWidth="150.0" />
+      </HBox>
       <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Upcoming Schedule" />
       <ListView fx:id="appointmentListView" VBox.vgrow="ALWAYS" />
    </VBox>
