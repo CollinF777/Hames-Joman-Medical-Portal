@@ -17,4 +17,6 @@ module com.HamesJoman.patientportalguiapp {
     opens com.HamesJoman.patientportalguiapp.controllers.PatientControllers to javafx.fxml;
     exports com.HamesJoman.patientportalguiapp.controllers.DoctorControllers;
     opens com.HamesJoman.patientportalguiapp.controllers.DoctorControllers to javafx.fxml;
+    exports com.HamesJoman.patientportalguiapp.controllers.SharedControllers;
+    opens com.HamesJoman.patientportalguiapp.controllers.SharedControllers to javafx.fxml;
 }
