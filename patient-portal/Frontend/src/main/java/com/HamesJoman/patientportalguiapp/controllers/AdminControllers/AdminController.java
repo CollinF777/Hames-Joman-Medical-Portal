@@ -80,6 +80,27 @@ public class AdminController {
     }
 
     @FXML
+    public void onUpdateAptButtonClick() {
+        actionText.setText("Updating an Appointment");
+
+        try{
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/Admin/update-appt-view.fxml")
+            );
+
+            Scene scene = new Scene(loader.load(), 400, 450);
+
+            Stage popup = new Stage();
+            popup.setTitle("Update Appointment");
+            popup.setScene(scene);
+            popup.show();
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     protected void onNewUserButtonClick() {
         actionText.setText("Creating a new User");
 

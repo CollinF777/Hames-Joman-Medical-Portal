@@ -157,9 +157,9 @@ public class UserService {
      */
     @Transactional
     public boolean deleteUser(int id) {
-       if (!userRepository.existsById(id)) {
-           return false;
-       }
+        if (!userRepository.existsById(id)) {
+            return false;
+        }
 
         /**
          * Gathers every active appointment for a user
