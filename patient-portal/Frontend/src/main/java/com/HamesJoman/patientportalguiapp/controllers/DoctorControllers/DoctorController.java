@@ -29,6 +29,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Controller that handles all logic for the doctor view
+ *
+ * @author Collin Fair and Liam Callahan
+ */
 public class DoctorController {
 
     @FXML private Label nextApptLabel;
