@@ -3,8 +3,19 @@ package com.HamesJoman.patient_portal.dto;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for AppointmentRequest DTO
+ * Just making sure all the getters and setters on AppointmentRequest
+ * work correctly and store the right values
+ *
+ * @author Mohamed Musa & Ali Beheshti
+ */
 class AppointmentRequestTest {
 
+    /**
+     * Test that all fields can be set and retrieved correctly
+     * Covers date, start time, end time, patient ID, and doctor ID
+     */
     @Test
     void testGettersAndSetters() {
         AppointmentRequest request = new AppointmentRequest();

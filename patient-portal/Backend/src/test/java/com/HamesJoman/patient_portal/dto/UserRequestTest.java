@@ -3,8 +3,19 @@ package com.HamesJoman.patient_portal.dto;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for UserRequest DTO
+ * Just making sure all the getters and setters on UserRequest
+ * work correctly and store the right values
+ *
+ * @author Mohamed Musa & Ali Beheshti
+ */
 class UserRequestTest {
 
+    /**
+     * Test that all fields can be set and retrieved correctly
+     * Covers first name, last name, username, password, and role
+     */
     @Test
     void testGettersAndSetters() {
         UserRequest userRequest = new UserRequest();

@@ -7,8 +7,19 @@ import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the Appointment model
+ * Making sure the constructors, getters, and setters all work as expected
+ * and that Appointment-specific defaults like status are set correctly
+ *
+ * @author Mohamed Musa & Ali Beheshti
+ */
 class AppointmentTest {
 
+    /**
+     * Test that the full constructor sets all fields correctly
+     * Also checks that status defaults to ACTIVE on a new appointment
+     */
     @Test
     void testAppointmentConstructorAndGetters() {
         LocalDate date = LocalDate.of(2023, 10, 20);
@@ -27,6 +38,10 @@ class AppointmentTest {
         assertEquals(Status.ACTIVE, appointment.getStatus());
     }
 
+    /**
+     * Test that all fields can be individually set and retrieved correctly
+     * Covers id, date, times, patient, doctor, status, and lastUpdated
+     */
     @Test
     void testSetters() {
         Appointment appointment = new Appointment();

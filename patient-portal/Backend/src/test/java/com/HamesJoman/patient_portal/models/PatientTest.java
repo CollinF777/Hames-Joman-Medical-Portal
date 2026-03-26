@@ -5,8 +5,19 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the Patient model
+ * Making sure the constructors, getters, and setters all work as expected
+ * and that Patient-specific defaults like role are set correctly
+ *
+ * @author Mohamed Musa & Ali Beheshti
+ */
 class PatientTest {
 
+    /**
+     * Test that the full constructor sets all fields correctly
+     * Also checks that role defaults to "Patient" and lastPasswordChange is set automatically
+     */
     @Test
     void testPatientConstructorAndGetters() {
         Patient patient = new Patient(1, "John", "Doe", "johndoe", "password123");
@@ -20,6 +31,10 @@ class PatientTest {
         assertNotNull(patient.getLastPasswordChange());
     }
 
+    /**
+     * Test that all fields can be individually set and retrieved correctly
+     * Covers id, name, username, password, role, and lastLogin
+     */
     @Test
     void testSetters() {
         Patient patient = new Patient();
