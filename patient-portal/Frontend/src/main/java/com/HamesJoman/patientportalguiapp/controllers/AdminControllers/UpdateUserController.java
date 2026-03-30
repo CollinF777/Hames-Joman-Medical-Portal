@@ -11,6 +11,9 @@ import javafx.stage.Stage;
 
 import java.net.http.HttpResponse;
 
+/**
+ * Controller for updating a user
+ */
 public class UpdateUserController {
     @FXML
     private Label actionText;
@@ -44,6 +47,9 @@ public class UpdateUserController {
     // Start with no id selected
     private int selectedUserId = -1;
 
+    /**
+     * Initialize combobox with all roles and loads existing users
+     */
     @FXML
     public void initialize() {
         roleComboBox.getItems().addAll("Patient", "Doctor", "Admin");
@@ -54,6 +60,9 @@ public class UpdateUserController {
         userSelectComboBox.setOnAction(e -> onUserSelected());
     }
 
+    /**
+     * Loads all existing users for dropdown box
+     */
     private void loadUsers() {
         try {
             HttpResponse<String> response = ApiClient.getAllUsers();
@@ -79,6 +88,9 @@ public class UpdateUserController {
         }
     }
 
+    /**
+     * Fills all user info on selection
+     */
     private void onUserSelected() {
         String selected = userSelectComboBox.getValue();
         if (selected == null) {
@@ -112,6 +124,11 @@ public class UpdateUserController {
         }
     }
 
+    /**
+     * Method to set edit fields disabled if needed
+     *
+     * @param disabled boolean stating if fields should be disabled or not
+     */
     private void setEditFieldsDisabled(boolean disabled) {
         firstNameField.setDisable(disabled);
         lastNameField.setDisable(disabled);
@@ -121,6 +138,9 @@ public class UpdateUserController {
         updateButton.setDisable(disabled);
     }
 
+    /**
+     * Updates user if all fields are properly filled and no conflicts
+     */
     @FXML
     private void onUpdateButtonClick() {
         if (selectedUserId == -1) {
@@ -156,6 +176,10 @@ public class UpdateUserController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Goes back to default admin view on back button click
+     */
     @FXML
     private void onBackButtonClick() {
         Stage stage = (Stage) backButton.getScene().getWindow();

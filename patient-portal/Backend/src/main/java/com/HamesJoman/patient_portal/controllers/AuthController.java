@@ -22,6 +22,13 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
+    /**
+     * POST /api/auth/login
+     * Method to handle login, checks that user exists and has correct password then records login
+     *
+     * @param request A login request with all the necessary details for each login
+     * @return Status based off login success
+     */
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody LoginRequest request) {
         User user = userService.getUserByUsername(request.getUsername());

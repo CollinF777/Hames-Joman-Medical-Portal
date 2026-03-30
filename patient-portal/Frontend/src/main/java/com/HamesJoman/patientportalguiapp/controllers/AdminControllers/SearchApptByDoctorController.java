@@ -12,6 +12,11 @@ import javafx.stage.Stage;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 
+/**
+ * Controller for searching appointments by doctor
+ *
+ * @author Collin Fair
+ */
 public class SearchApptByDoctorController {
     @FXML
     private Button backButton;
@@ -27,12 +32,18 @@ public class SearchApptByDoctorController {
 
     private int selectedDoctorId = -1;
 
+    /**
+     * Initialize the combobox with all doctors
+     */
     @FXML
     public void initialize() {
         loadDoctors();
         doctorSelectComboBox.setOnAction(e -> onDoctorSelected());
     }
 
+    /**
+     * Loads all existing doctors
+     */
     public void loadDoctors() {
         try {
             HttpResponse<String> response = ApiClient.getAllUsers();
@@ -75,6 +86,10 @@ public class SearchApptByDoctorController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Gets doctor when selected from the box
+     */
     private void onDoctorSelected() {
         String selected = doctorSelectComboBox.getValue();
         if (selected == null) {
@@ -83,6 +98,10 @@ public class SearchApptByDoctorController {
         selectedDoctorId = Integer.parseInt(selected.split(" - ")[0].trim());
         onSearchButtonClick();
     }
+
+    /**
+     * Goes back to default admin view on back button click
+     */
     @FXML
     private void onBackButtonClick() {
         // Close the current window
@@ -90,6 +109,9 @@ public class SearchApptByDoctorController {
         stage.close();
     }
 
+    /**
+     * Fills out all appointments for a given doctor when selected
+     */
     @FXML
     private void onSearchButtonClick() {
         if (selectedDoctorId == -1) {

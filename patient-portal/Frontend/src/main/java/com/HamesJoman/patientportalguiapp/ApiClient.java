@@ -8,7 +8,7 @@ import java.net.http.HttpResponse;
 /**
  * Class to handle all HTTP communication between
  * the JavaFX front end and RESTful APIs in the backend
- * @author Collin Fair, Liam Callahan
+ * @author Collin Fair, Liam Callahan, and Corey Suhr
  */
 public class ApiClient {
     // Base backend API url

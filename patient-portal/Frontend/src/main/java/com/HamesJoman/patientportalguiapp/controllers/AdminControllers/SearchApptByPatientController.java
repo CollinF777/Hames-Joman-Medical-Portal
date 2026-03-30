@@ -11,6 +11,9 @@ import javafx.stage.Stage;
 
 import java.net.http.HttpResponse;
 
+/**
+ * Controller for handling all logic in the front end for searching an appointment by patient
+ */
 public class SearchApptByPatientController {
 
     @FXML
@@ -26,12 +29,18 @@ public class SearchApptByPatientController {
 
     private int selectedPatientId = -1;
 
+    /**
+     * Initialize combobox with all patients
+     */
     @FXML
     public void initialize() {
         loadPatients();
         patientSelectComboBox.setOnAction(e -> onPatientSelected());
     }
 
+    /**
+     * Loads all existing patients for combobox
+     */
     private void loadPatients() {
         try {
             HttpResponse<String> response = ApiClient.getAllUsers();
@@ -59,6 +68,9 @@ public class SearchApptByPatientController {
         }
     }
 
+    /**
+     * Gets patient on selection from combobox
+     */
     private void onPatientSelected() {
         String selected = patientSelectComboBox.getValue();
         if (selected == null) {
@@ -68,6 +80,9 @@ public class SearchApptByPatientController {
         onSearchButtonClick();
     }
 
+    /**
+     * Shows all appointments for a given patient on selection
+     */
     @FXML
     private void onSearchButtonClick() {
         if (selectedPatientId == -1) {
@@ -118,6 +133,9 @@ public class SearchApptByPatientController {
         }
     }
 
+    /**
+     * Go back to default admin view on button click
+     */
     @FXML
     private void onBackButtonClick() {
         Stage stage = (Stage) backButton.getScene().getWindow();

@@ -6,6 +6,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+/**
+ * Model for Appointment.
+ *
+ * @author Nathan Amidon and Collin Fair
+ */
 @Entity
 @Table(name = "appointments")
 public class Appointment {

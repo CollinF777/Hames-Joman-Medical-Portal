@@ -7,6 +7,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import java.net.http.HttpResponse;
 
+/**
+ * Controller for handling a users password change
+ *
+ * @author Liam Callahan
+ */
 public class PasswordChangeController {
 
     @FXML private PasswordField currentPasswordField;
@@ -14,6 +19,9 @@ public class PasswordChangeController {
     @FXML private PasswordField confirmPasswordField;
     @FXML private Label passwordStatusLabel;
 
+    /**
+     * Verifies a password change is valid then changes password if successful
+     */
     @FXML
     private void onChangePasswordButtonClick() {
         String current = currentPasswordField.getText();
@@ -56,11 +64,20 @@ public class PasswordChangeController {
         }
     }
 
+    /**
+     * Set status based off change password success
+     *
+     * @param message Message that changes based off change success
+     * @param success Boolean to determine if password changed or not
+     */
     private void setStatus(String message, boolean success) {
         passwordStatusLabel.setText(message);
         passwordStatusLabel.setStyle(success ? "-fx-text-fill: #309423;" : "-fx-text-fill: #cc0000;");
     }
 
+    /**
+     * Clear fields for after a successful change
+     */
     private void clearFields() {
         currentPasswordField.clear();
         newPasswordField.clear();
