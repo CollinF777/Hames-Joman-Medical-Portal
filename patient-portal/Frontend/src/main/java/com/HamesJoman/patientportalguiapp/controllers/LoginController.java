@@ -14,6 +14,11 @@ import javafx.stage.Stage;
 
 import java.net.http.HttpResponse;
 
+/**
+ * Controller for handling a login
+ *
+ * @author Collin Fair and Liam Callahan
+ */
 public class LoginController {
     @FXML
     private Label actionText;
@@ -97,7 +102,7 @@ public class LoginController {
             Stage stage = (Stage) usernameField.getScene().getWindow();
             stage.setTitle(title);
             stage.setScene(scene);
-            stage.sizeToScene();     // 🔥 important
+            stage.sizeToScene();
             stage.centerOnScreen();
         } catch (Exception e) {
             actionText.setText("Failed to load dashboard");

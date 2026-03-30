@@ -7,6 +7,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Main class for running the front end application
+ *
+ * @author Collin Fair
+ */
 public class PortalApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {

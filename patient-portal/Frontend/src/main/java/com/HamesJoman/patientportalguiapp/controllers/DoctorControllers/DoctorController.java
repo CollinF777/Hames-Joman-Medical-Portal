@@ -47,7 +47,9 @@ public class DoctorController {
     private final ObservableList<String> appointmentList = FXCollections.observableArrayList();
     private JsonNode allAppointments;
 
-
+    /**
+     * Initialize doctor view to welcome them and set combobox for filters
+     */
     @FXML
     public void initialize() {
         welcomeLabel.setText("Welcome back, Dr. " + SessionManager.getInstance().getFullName() + "!");

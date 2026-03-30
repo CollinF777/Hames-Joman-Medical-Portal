@@ -13,6 +13,11 @@ import java.net.http.HttpResponse;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * Controller for all Create Appointment functionality based off the view
+ *
+ * @author Collin Fair
+ */
 public class CreateAppointmentController {
 
     @FXML
@@ -44,6 +49,9 @@ public class CreateAppointmentController {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
+    /**
+     * Initialize spinners to default settings and load users for dropdown box
+     */
     @FXML
     public void initialize() {
         // Hour spinners
@@ -69,6 +77,9 @@ public class CreateAppointmentController {
         loadUsers();
     }
 
+    /**
+     * Method to set the initial time to current time rounded to nearest 15th minute
+     */
     private void setInitialTime() {
         LocalTime now = LocalTime.now();
 
@@ -99,6 +110,9 @@ public class CreateAppointmentController {
         endMinuteSpinner.getValueFactory().setValue(endTime.getMinute());
     }
 
+    /**
+     * Loads all existing users for the dropdown box
+     */
     private void loadUsers() {
         try {
             HttpResponse<String> response = ApiClient.getAllUsers();
@@ -132,6 +146,9 @@ public class CreateAppointmentController {
         }
     }
 
+    /**
+     * Creates the appointment if all fields are filled in and theres no conflict
+     */
     @FXML
     private void onCreateAppointmentButtonClick() {
         // Validate fields
@@ -201,7 +218,9 @@ public class CreateAppointmentController {
         }
     }
 
-
+    /**
+     * Go back to default admin view on back button click
+     */
     @FXML
     private void onBackButtonClick() {
         // Close the current window
