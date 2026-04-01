@@ -50,7 +50,7 @@
                 <PasswordField fx:id="passwordField" onAction="#onLoginButtonClick" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             </children>
         </GridPane>
-        <Button text="Login" onAction="#onLoginButtonClick" prefWidth="100.0" />
+        <Button fx:id="loginButton" text="Login" onAction="#onLoginButtonClick" prefWidth="100.0" />
     </VBox>
     <Separator orientation="VERTICAL">
         <HBox.margin>
