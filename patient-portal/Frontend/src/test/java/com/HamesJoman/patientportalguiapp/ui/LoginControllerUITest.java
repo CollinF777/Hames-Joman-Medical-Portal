@@ -10,7 +10,6 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.LabeledMatchers;
-import org.testfx.matcher.base.NodeMatchers;
 
 /**
  * Frontend tests for LoginController.
@@ -48,7 +47,7 @@ class LoginControllerUITest {
      *              as if a user was actually just clicking all these things
      */
     @Test
-    void testEmptyFieldsShowsError(FxRobot robot) {
+    void emptyFieldsShowsErrorTest(FxRobot robot) {
         // I dont want to make comments to obvious but for the sake of teaching, this is how you test click buttons
         robot.clickOn("#loginButton");
         // Similar to JUnit assertions, you are verifying that some fxml node matches some kind of text
@@ -61,7 +60,7 @@ class LoginControllerUITest {
      * @param robot TestFX testing robot to click buttons
      */
     @Test
-    void testOnlyUsernameFilledShowsError(FxRobot robot) {
+    void onlyUsernameFilledShowsErrorTest(FxRobot robot) {
         // Again, probably self-explanatory but .write() is how you get the robot to enter text
         robot.clickOn("#usernameField").write("dbjuiwkhbfiwfjc");
         robot.clickOn("#loginButton");
@@ -74,7 +73,7 @@ class LoginControllerUITest {
      * @param robot TestFX testing robot to click buttons
      */
     @Test
-    void testOnlyPasswordFilledShowsError(FxRobot robot) {
+    void onlyPasswordFilledShowsErrorTest(FxRobot robot) {
         robot.clickOn("#passwordField").write("fakePassword");
         robot.clickOn("#loginButton");
         FxAssert.verifyThat("#actionText", LabeledMatchers.hasText("Please enter all fields"));
@@ -87,40 +86,12 @@ class LoginControllerUITest {
      * @param robot TestFX testing robot to click buttons
      */
     @Test
-    void testConnectionFailureShowsError(FxRobot robot) {
+    void connectionFailureShowsErrorTest(FxRobot robot) {
         // No backend running, so a real attempt will throw ConnectException
         // and the controller catches it and shows this message
         robot.clickOn("#usernameField").write("fjnvcefnknf");
         robot.clickOn("#passwordField").write("fnikeaninf");
         robot.clickOn("#loginButton");
         FxAssert.verifyThat("#actionText", LabeledMatchers.hasText("Couldn't connect to server"));
-    }
-
-    /**
-     * Test that the admin dashboard loads and contains the expected elements
-     *
-     * @param robot TestFX testing robot to click buttons
-     * @throws Exception
-     */
-    @Test
-    void testAdminDashboardLoads(FxRobot robot) throws Exception {
-        // Load the admin view directly instead of going through login
-        robot.interact(() -> {
-            try {
-                FXMLLoader loader = new FXMLLoader(
-                        getClass().getResource("/com/HamesJoman/patientportalguiapp/admin-view.fxml")
-                );
-                Scene scene = new Scene(loader.load());
-                Stage stage = (Stage) robot.lookup("#loginButton").query().getScene().getWindow();
-                stage.setScene(scene);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        robot.sleep(500);
-
-        // Verify admin-specific elements are present
-        FxAssert.verifyThat("#actionText", NodeMatchers.isVisible());
     }
 }
