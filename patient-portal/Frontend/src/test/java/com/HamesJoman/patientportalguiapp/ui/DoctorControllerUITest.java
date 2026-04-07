@@ -19,16 +19,6 @@ import org.testfx.matcher.control.LabeledMatchers;
  * labels are initialized correctly when the controller's {@code initialize()} runs
  * with an active session but no reachable backend.
  *
- * Because {@code initialize()} reads from {@link SessionManager} the moment the
- * FXML is loaded, the session must be populated before the loader is called —
- * that's why {@code setUser} lives inside {@code @Start} rather than a
- * {@code @BeforeEach}. {@code @BeforeEach} runs before {@code @Start} in the
- * TestFX lifecycle, so anything set there would be overwritten or missed entirely
- * if the FX thread fires first.
- *
- * This is JUST for ui testing, logic should be in the logic folder.
- * Separated so that logic tests can be run without spinning up JavaFX every time —
- * keeps the feedback loop fast when you only changed something in the backend layer.
  *
  * @author Nathan Amidon
  */
@@ -37,11 +27,6 @@ class DoctorControllerUITest {
 
     /**
      * Build the JavaFX stage for each test run with the doctor dashboard as the default screen.
-     *
-     * The session is populated HERE, before the FXML loader fires, because
-     * {@code DoctorController.initialize()} calls {@code SessionManager.getInstance().getFullName()}
-     * immediately on load. If we set the user any later we'd be too late — the welcome label
-     * would already have been written with whatever garbage was in the session at that point.
      *
      * @param stage the main JavaFX stage provided by the TestFX extension
      * @throws Exception if the FXML doesn't load (if this happens WE ARE COOKED)
@@ -83,13 +68,8 @@ class DoctorControllerUITest {
     }
 
     /**
-     * Verify that {@code nextApptLabel} stays at its FXML default of "Loading..." when
+     * Verify that nextApptLabel stays at its FXML default of "Loading..." when
      * the backend is unreachable.
-     *
-     * The controller only updates this label on a successful 200 response from the API.
-     * Since there's no backend running, the catch block fires instead, and that block
-     * never touches {@code nextApptLabel} — so it should still read exactly what the
-     * FXML set it to.
      *
      * @param robot TestFX robot that simulates user interaction with the UI
      */
@@ -101,11 +81,8 @@ class DoctorControllerUITest {
     }
 
     /**
-     * Verify that {@code totalApptsLabel} stays at its FXML default of "0 Total Appointments"
+     * Verify that totalApptsLabel stays at its FXML default of "0 Total Appointments"
      * when the backend is unreachable.
-     *
-     * Same reasoning as {@code nextApptLabelRemainsAtLoadingOnNoServerTest} — the label is
-     * only updated on a successful API response, and the catch block doesn't touch it.
      *
      * @param robot TestFX robot that simulates user interaction with the UI
      */
