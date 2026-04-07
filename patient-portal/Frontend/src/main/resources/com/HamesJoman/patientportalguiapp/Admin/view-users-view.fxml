@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox prefHeight="500.0" prefWidth="620.0" spacing="10" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.HamesJoman.patientportalguiapp.controllers.AdminControllers.ViewUsersController">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+    <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="All Users" />
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Filter by Role:" />
+        <ComboBox fx:id="roleFilterComboBox" prefWidth="150.0" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Label fx:id="totalUsersLabel" text="0 Users" />
+    </HBox>
+    <ListView fx:id="usersListView" VBox.vgrow="ALWAYS" />
+</VBox>
