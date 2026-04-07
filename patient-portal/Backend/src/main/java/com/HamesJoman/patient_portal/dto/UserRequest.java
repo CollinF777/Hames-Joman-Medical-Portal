@@ -4,11 +4,7 @@ package com.HamesJoman.patient_portal.dto;
  * Data Transfer Object for user creation.
  * Contains all user fields that can be set via the API.
  *
- * I'm gonna bsfr idk if this is how you're meant to do DTO's but this is how im doing it
- *
- * DTO's are meant to keep data safe like you arent exposing any internal database objects when going between
- * API and client
- * Jenny if you see this during a epic please specify
+ * @author Collin Fair
  */
 public class UserRequest {
     private String firstName;

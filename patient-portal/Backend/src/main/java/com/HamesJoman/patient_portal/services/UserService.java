@@ -157,9 +157,9 @@ public class UserService {
      */
     @Transactional
     public boolean deleteUser(int id) {
-       if (!userRepository.existsById(id)) {
-           return false;
-       }
+        if (!userRepository.existsById(id)) {
+            return false;
+        }
 
         /**
          * Gathers every active appointment for a user
@@ -216,6 +216,13 @@ public class UserService {
         return passwordEncoder.matches(rawPassword, hashedPassword);
     }
 
+    /**
+     * Method to get user strictly by their username
+     * Used for searching users
+     *
+     * @param username The requested username
+     * @return User associated with the username
+     */
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }

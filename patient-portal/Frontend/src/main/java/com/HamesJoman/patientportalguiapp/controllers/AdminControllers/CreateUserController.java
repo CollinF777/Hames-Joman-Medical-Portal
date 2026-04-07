@@ -11,6 +11,11 @@ import javafx.stage.Stage;
 
 import java.net.http.HttpResponse;
 
+/**
+ * Controller for handling the create user view
+ *
+ * @author Collin Fair
+ */
 public class CreateUserController {
     @FXML
     private Label actionText;
@@ -33,12 +38,18 @@ public class CreateUserController {
     @FXML
     private Button backButton;
 
+    /**
+     * Set values for the role combo box, default is Patient
+     */
     @FXML
     public void initialize() {
         roleComboBox.getItems().addAll("Patient", "Doctor", "Admin");
         roleComboBox.setValue("Patient");
     }
 
+    /**
+     * Creates user on button click if all fields are filled out properly
+     */
     @FXML
     private void onCreateUserButtonClick() {
         if (firstNameField.getText().isEmpty() || lastNameField.getText().isEmpty()
@@ -74,6 +85,9 @@ public class CreateUserController {
         }
     }
 
+    /**
+     * Goes back to default admin view on back button click
+     */
     @FXML
     private void onBackButtonClick() {
         Stage stage = (Stage) backButton.getScene().getWindow();

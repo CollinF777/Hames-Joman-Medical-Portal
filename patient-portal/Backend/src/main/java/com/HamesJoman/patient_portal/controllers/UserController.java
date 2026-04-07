@@ -88,6 +88,10 @@ public class UserController {
      * PUT /api/users/{id}
      * Updates an existing user's details.
      * If password is blank, it is left unchanged.
+     *
+     * @param id users id
+     * @param request UserRequest DTO containing user details (firstName, lastName, username, password, role)
+     * @return Response entity with updated user
      */
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody UserRequest request) {
@@ -98,7 +102,16 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/{id}/change-password")
+    /**
+     * PATCH /api/users/{id}/change-password
+     * Changes a users current password to a new one
+     * Was PUT before, changed to PATCH because no need to fully replace the user each time
+     *
+     * @param id Users id
+     * @param request ChangePasswordRequest with details on the new and prior passwords
+     * @return A response entity to show the password has successfully changed or a status error
+     */
+    @PatchMapping("/{id}/change-password")
     public ResponseEntity<String> changePassword(@PathVariable int id, @RequestBody ChangePasswordRequest request) {
         if (request.getCurrentPassword() == null || request.getCurrentPassword().isBlank() ||
                 request.getNewPassword() == null || request.getNewPassword().isBlank()) {

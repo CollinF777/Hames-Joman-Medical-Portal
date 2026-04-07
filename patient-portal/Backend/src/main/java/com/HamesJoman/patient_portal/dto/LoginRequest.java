@@ -3,6 +3,8 @@ package com.HamesJoman.patient_portal.dto;
 /**
  * DTO for login reqs
  * Only has fields needed for auth
+ *
+ * @author Collin Fair
  */
 public class LoginRequest {
     private String username;

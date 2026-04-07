@@ -11,6 +11,11 @@ import javafx.stage.Stage;
 
 import java.net.http.HttpResponse;
 
+/**
+ * Controller for the delete user view
+ *
+ * @author Liam Callahan
+ */
 public class DeleteUserController {
     @FXML
     private Label actionText;
@@ -29,6 +34,9 @@ public class DeleteUserController {
     // Start with no id selected
     private int selectedUserId = -1;
 
+    /**
+     * Initialize the user select combobox with all existing users
+     */
     @FXML
     public void initialize() {
         setEditFieldsDisabled(true);
@@ -38,6 +46,9 @@ public class DeleteUserController {
         userSelectComboBox.setOnAction(e -> onUserSelected());
     }
 
+    /**
+     * Loads all existing users for the combobox
+     */
     private void loadUsers() {
         try {
             HttpResponse<String> response = ApiClient.getAllUsers();
@@ -63,6 +74,9 @@ public class DeleteUserController {
         }
     }
 
+    /**
+     * Fills in text fields when user is selected from the combobox
+     */
     private void onUserSelected() {
         String selected = userSelectComboBox.getValue();
         if (selected == null) {
@@ -90,10 +104,18 @@ public class DeleteUserController {
         }
     }
 
+    /**
+     * Stops users from editing fields if set to disabled
+     *
+     * @param disabled Boolean describing if a user can edit or not
+     */
     private void setEditFieldsDisabled(boolean disabled) {
         deleteButton.setDisable(disabled);
     }
 
+    /**
+     * Handles deleting a user on button click
+     */
     @FXML
     private void onDeleteButtonClick() {
         if (selectedUserId == -1) {
@@ -119,6 +141,10 @@ public class DeleteUserController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Goes back to default admin view on back button click
+     */
     @FXML
     private void onBackButtonClick() {
         Stage stage = (Stage) backButton.getScene().getWindow();

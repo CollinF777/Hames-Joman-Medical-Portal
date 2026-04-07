@@ -20,7 +20,7 @@ public class UpdateAppointmentController {
     private Label actionText;
 
     @FXML
-    private ComboBox<String> appointmentSelectComboBox;
+    private ComboBox appointmentSelectComboBox;
 
     @FXML
     private DatePicker appointmentDatePicker;
@@ -73,7 +73,7 @@ public class UpdateAppointmentController {
     }
 
     private void onAppointmentSelected() {
-        String selected = appointmentSelectComboBox.getValue();
+        String selected = appointmentSelectComboBox.getValue().toString();
         if(selected == null){
             return;
         }

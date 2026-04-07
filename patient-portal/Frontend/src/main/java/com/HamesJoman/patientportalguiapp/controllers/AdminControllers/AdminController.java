@@ -10,10 +10,18 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Controller for default admin view, mostly other buttons that lead to other views
+ *
+ * @author Collin Fair, Corey Suhr, and Liam Callahan
+ */
 public class AdminController {
     @FXML
     private Label actionText;
 
+    /**
+     * Open up the view for searching appointments by doctor on button click
+     */
     @FXML
     protected void onDoctorSearchAptButtonClick() {
         actionText.setText("Searching Doctor Appointments.");
@@ -36,6 +44,9 @@ public class AdminController {
         }
     }
 
+    /**
+     * Open up the view for searching appointments by patient on button click
+     */
     @FXML
     protected void onPatientSearchAptButtonClick() {
         actionText.setText("Searching Patient appointments");
@@ -58,6 +69,9 @@ public class AdminController {
         }
     }
 
+    /**
+     * Open up the view for creating new appointments on button click
+     */
     @FXML
     protected void onNewAptButtonClick() {
         actionText.setText("Creating a new Appointment");
@@ -80,6 +94,9 @@ public class AdminController {
         }
     }
 
+    /**
+     * Open up the view for updating appointments on button click
+     */
     @FXML
     public void onUpdateAptButtonClick() {
         actionText.setText("Updating an Appointment");
@@ -101,6 +118,9 @@ public class AdminController {
         }
     }
 
+    /**
+     * Open up the view for creating new users on button click
+     */
     @FXML
     public void onCancelAptButtonClick() {
         actionText.setText("Cancelling an Appointment");
@@ -140,6 +160,9 @@ public class AdminController {
         }
     }
 
+    /**
+     * Open up the view for deleting users on button click
+     */
     @FXML
     protected void onDeleteUserButtonClick() {
         actionText.setText("Deleting a User");
@@ -158,6 +181,9 @@ public class AdminController {
         }
     }
 
+    /**
+     * Open up the view for updating users on button click
+     */
     @FXML
     protected void onUpdateUserButtonClick() {
         actionText.setText("Updating a User");
@@ -176,11 +202,17 @@ public class AdminController {
         }
     }
 
+    /**
+     * Closes out the application on exit button click
+     */
     @FXML
     public void onExitButtonClick() {
         System.exit(0);
     }
 
+    /**
+     * Clears the session data and takes user back to login view on button click
+     */
     public void onLogoutButtonClick() {
         // Wipe session data
         SessionManager.getInstance().clear();
