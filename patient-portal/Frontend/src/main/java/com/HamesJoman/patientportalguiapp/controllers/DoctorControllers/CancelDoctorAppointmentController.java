@@ -1,5 +1,6 @@
 package com.HamesJoman.patientportalguiapp.controllers.AdminControllers;
 
+import com.HamesJoman.patientportalguiapp.SessionManager;
 import com.HamesJoman.patientportalguiapp.controllers.SharedControllers.ConfirmController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,11 +18,11 @@ import java.io.IOException;
 import java.net.http.HttpResponse;
 
 /**
- * Controller that handles logic for cancelling appointment from admin dashboard
+ * Controller that handles logic for cancelling appointment from doctor dashboard
  *
  * @author Corey Suhr
  */
-public class CancelAppointmentController {
+public class CancelDoctorAppointmentController {
     @FXML
     private Label actionText;
 
@@ -56,11 +57,14 @@ public class CancelAppointmentController {
                 ObservableList<String> items = FXCollections.observableArrayList();
 
                 for(JsonNode appointment: appointments){
-                    if(!appointment.get("status").asText().equalsIgnoreCase("CANCELLED")){
+                    if(
+                            !appointment.get("status").asText().equalsIgnoreCase("CANCELLED")
+                            && appointment.get("doctor").get("id").asInt() == SessionManager.getInstance().getUserId()
+                    ){
                         int id = appointment.get("id").asInt();
-                        String patientName = appointment.get("patient").get("lastName").asText();
-                        String doctorName = appointment.get("doctor").get("lastName").asText();
-                        items.add(id + " - " + patientName + "/" + doctorName);
+                        String fName = appointment.get("patient").get("firstName").asText();
+                        String lName = appointment.get("patient").get("lastName").asText();
+                        items.add(id + " - " + fName + " " + lName);
                     }
                 }
 

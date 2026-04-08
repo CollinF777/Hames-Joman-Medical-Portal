@@ -241,4 +241,24 @@ public class PatientController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Loads popup for cancelling an appointment
+     */
+    @FXML
+    public void onCancelAptButtonClick() {
+        try{
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/cancel-pat-appt-view.fxml")
+            );
+
+            Scene scene = new Scene(loader.load(), 400, 450);
+            Stage popup = new Stage();
+            popup.setTitle("Cancel Appointment");
+            popup.setScene(scene);
+            popup.show();
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+    }
 }

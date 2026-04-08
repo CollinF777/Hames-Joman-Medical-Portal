@@ -1,27 +1,24 @@
-package com.HamesJoman.patientportalguiapp.controllers.AdminControllers;
+package com.HamesJoman.patientportalguiapp.controllers.PatientControllers;
 
-import com.HamesJoman.patientportalguiapp.controllers.SharedControllers.ConfirmController;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import com.HamesJoman.patientportalguiapp.ApiClient;
+import com.HamesJoman.patientportalguiapp.SessionManager;
+import com.HamesJoman.patientportalguiapp.controllers.SharedControllers.ConfirmController;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-
 import java.net.http.HttpResponse;
 
-/**
- * Controller that handles logic for cancelling appointment from admin dashboard
- *
- * @author Corey Suhr
- */
-public class CancelAppointmentController {
+public class CancelPatientAppointmentController {
     @FXML
     private Label actionText;
 
@@ -56,11 +53,14 @@ public class CancelAppointmentController {
                 ObservableList<String> items = FXCollections.observableArrayList();
 
                 for(JsonNode appointment: appointments){
-                    if(!appointment.get("status").asText().equalsIgnoreCase("CANCELLED")){
+                    if(
+                            !appointment.get("status").asText().equalsIgnoreCase("CANCELLED")
+                                    && appointment.get("patient").get("id").asInt() == SessionManager.getInstance().getUserId()
+                    ){
                         int id = appointment.get("id").asInt();
-                        String patientName = appointment.get("patient").get("lastName").asText();
-                        String doctorName = appointment.get("doctor").get("lastName").asText();
-                        items.add(id + " - " + patientName + "/" + doctorName);
+                        String fName = appointment.get("doctor").get("firstName").asText();
+                        String lName = appointment.get("doctor").get("lastName").asText();
+                        items.add(id + " - " + fName + " " + lName);
                     }
                 }
 
