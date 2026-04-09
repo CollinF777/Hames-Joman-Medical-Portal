@@ -6,9 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.stage.Stage;
 
 import java.net.http.HttpResponse;
 import java.time.DayOfWeek;
@@ -23,13 +25,15 @@ import java.util.List;
 /**
  * Controller for the admin view all appointments screen with time filtering
  *
- * @author Mohamed Musa
+ * @author Mohamed Musa and Collin Fair
  */
 public class ViewAppointmentsController {
 
     @FXML private ComboBox<String> filterComboBox;
     @FXML private ListView<String> appointmentListView;
     @FXML private Label totalApptsLabel;
+    @FXML
+    private Button backButton;
 
     private final ObjectMapper mapper = new ObjectMapper();
     private final ObservableList<String> appointmentList = FXCollections.observableArrayList();
@@ -117,5 +121,14 @@ public class ViewAppointmentsController {
 
         appointmentListView.setItems(appointmentList);
         totalApptsLabel.setText(filtered.size() + " Appointments");
+    }
+
+    /**
+     * Goes back to default admin view on back button click
+     */
+    @FXML
+    private void onBackButtonClick() {
+        Stage stage = (Stage) backButton.getScene().getWindow();
+        stage.close();
     }
 }

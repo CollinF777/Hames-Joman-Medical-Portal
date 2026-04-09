@@ -6,9 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.stage.Stage;
 
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
@@ -17,13 +19,15 @@ import java.util.List;
 /**
  * Controller for the admin view all users screen with role filtering
  *
- * @author Mohamed Musa
+ * @author Mohamed Musa and Collin Fair
  */
 public class ViewUsersController {
 
     @FXML private ComboBox<String> roleFilterComboBox;
     @FXML private ListView<String> usersListView;
     @FXML private Label totalUsersLabel;
+    @FXML
+    private Button backButton;
 
     private final ObjectMapper mapper = new ObjectMapper();
     private final ObservableList<String> userList = FXCollections.observableArrayList();
@@ -84,5 +88,14 @@ public class ViewUsersController {
 
         usersListView.setItems(userList);
         totalUsersLabel.setText(filtered.size() + " Users");
+    }
+
+    /**
+     * Goes back to default admin view on back button click
+     */
+    @FXML
+    private void onBackButtonClick() {
+        Stage stage = (Stage) backButton.getScene().getWindow();
+        stage.close();
     }
 }

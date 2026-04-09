@@ -17,4 +17,9 @@
         <Label fx:id="totalUsersLabel" text="0 Users" />
     </HBox>
     <ListView fx:id="usersListView" VBox.vgrow="ALWAYS" />
+    <HBox alignment="BOTTOM_RIGHT">
+        <children>
+            <Button fx:id="backButton" onAction="#onBackButtonClick" text="Back" />
+        </children>
+    </HBox>
 </VBox>

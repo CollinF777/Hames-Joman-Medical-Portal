@@ -3,7 +3,6 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <VBox prefHeight="500.0" prefWidth="700.0" spacing="10" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.HamesJoman.patientportalguiapp.controllers.AdminControllers.ViewAppointmentsController">
     <padding>
@@ -17,4 +16,9 @@
         <Label fx:id="totalApptsLabel" text="0 Appointments" />
     </HBox>
     <ListView fx:id="appointmentListView" VBox.vgrow="ALWAYS" />
+    <HBox alignment="BOTTOM_RIGHT">
+        <children>
+            <Button fx:id="backButton" onAction="#onBackButtonClick" text="Back" />
+        </children>
+    </HBox>
 </VBox>
