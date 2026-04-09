@@ -258,7 +258,7 @@ public class DoctorController {
     public void onCancelAptButtonClick() {
         try{
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/com/HamesJoman/patientportalguiapp/cancel-doc-appt-view.fxml")
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/Doctor/cancel-doc-appt-view.fxml")
             );
 
             Scene scene = new Scene(loader.load(), 400, 450);

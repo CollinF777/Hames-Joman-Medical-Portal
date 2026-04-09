@@ -50,7 +50,7 @@ class AdminControllerUITest {
         primaryStage = stage;
         FXMLLoader loader = new FXMLLoader(
             getClass().getResource(
-                "/com/HamesJoman/patientportalguiapp/admin-view.fxml"
+                    "/com/HamesJoman/patientportalguiapp/admin-view.fxml"
             )
         );
         Scene scene = new Scene(loader.load(), 320, 480);

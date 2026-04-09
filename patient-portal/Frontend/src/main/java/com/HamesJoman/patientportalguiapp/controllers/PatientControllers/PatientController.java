@@ -5,15 +5,11 @@ import com.HamesJoman.patientportalguiapp.SessionManager;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -23,7 +19,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -249,7 +244,7 @@ public class PatientController {
     public void onCancelAptButtonClick() {
         try{
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/com/HamesJoman/patientportalguiapp/cancel-pat-appt-view.fxml")
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/Patient/cancel-pat-appt-view.fxml")
             );
 
             Scene scene = new Scene(loader.load(), 400, 450);
