@@ -1,4 +1,4 @@
-package com.HamesJoman.patientportalguiapp.controllers.AdminControllers;
+package com.HamesJoman.patientportalguiapp.controllers.DoctorControllers;
 
 import com.HamesJoman.patientportalguiapp.SessionManager;
 import com.HamesJoman.patientportalguiapp.controllers.SharedControllers.ConfirmController;
@@ -39,6 +39,9 @@ public class CancelDoctorAppointmentController {
 
     private int selectedAppointmentId = -1;
 
+    /**
+     * Initialize appointment combobox with all appointments for a doctor
+     */
     @FXML
     public void initialize(){
         appointmentSelectComboBox.getItems().addAll("Appointment");
@@ -79,6 +82,9 @@ public class CancelDoctorAppointmentController {
         }
     }
 
+    /**
+     * Go back to default admin view on back button click
+     */
     public void onBackButtonClick() {
         Stage stage = (Stage) backButton.getScene().getWindow();
         stage.close();
