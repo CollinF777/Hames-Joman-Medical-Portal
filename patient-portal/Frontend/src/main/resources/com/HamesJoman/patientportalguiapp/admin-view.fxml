@@ -37,7 +37,6 @@
                         <Font size="11.0" />
                     </font>
                 </Label>
-                <Button maxWidth="Infinity" onAction="#onViewAllAppointmentsButtonClick" text="View All Appointments" />
                 <Button maxWidth="Infinity" onAction="#onPatientSearchAptButtonClick" text="Search Appointments by Patient" />
                 <Button maxWidth="Infinity" onAction="#onDoctorSearchAptButtonClick" text="Search Appointments by Doctor" />
                 <Button maxWidth="Infinity" onAction="#onNewAptButtonClick" text="New Appointment" />
@@ -53,7 +52,6 @@
                         <Font size="11.0" />
                     </font>
                 </Label>
-                <Button maxWidth="Infinity" onAction="#onViewAllUsersButtonClick" text="View All Users" />
                 <Button maxWidth="Infinity" onAction="#onNewUserButtonClick" text="New User" />
                 <Button maxWidth="Infinity" onAction="#onUpdateUserButtonClick" text="Update User" />
                 <Button maxWidth="Infinity" onAction="#onDeleteUserButtonClick" text="Delete User" />

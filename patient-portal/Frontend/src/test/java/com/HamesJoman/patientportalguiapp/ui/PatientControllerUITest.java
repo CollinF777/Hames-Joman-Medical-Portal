@@ -19,6 +19,14 @@ import org.testfx.matcher.control.LabeledMatchers;
  * the welcome label is personalized correctly, and that labels which depend on
  * a live server response stay at their FXML defaults when no backend is reachable.
  *
+ * The session is seeded in {@link #start(Stage)} BEFORE the FXML is loaded so that
+ * {@code PatientController.initialize()} can read the logged-in user from
+ * {@link SessionManager} the same way it would during a real login flow.
+ *
+ * This is JUST for ui testing, logic should be in the logic folder.
+ * Keeping them separate means you can run logic tests alone without spinning up
+ * a JavaFX toolkit — keeps the feedback loop fast.
+ *
  * @author Nathan Amidon
  */
 @ExtendWith(ApplicationExtension.class)
@@ -26,7 +34,7 @@ class PatientControllerUITest {
 
     /**
      * Build the JavaFX stage for each test run with the patient dashboard as the default screen.
-     * The session is set here — before the loader runs — so that initialize() picks up
+     * The session is set here — before the loader runs — so that {@code initialize()} picks up
      * the correct user data the moment the controller is instantiated by the FXMLLoader.
      *
      * @param stage the main JavaFX stage provided by the TestFX extension
@@ -73,7 +81,7 @@ class PatientControllerUITest {
     }
 
     /**
-     * Verify that nextApptLabel stays at "Loading..." when no server is running.
+     * Verify that {@code nextApptLabel} stays at "Loading..." when no server is running.
      * The controller only updates this label on a successful 200 response from the API;
      * the catch block doesn't touch it, so the FXML default survives intact.
      *
@@ -87,8 +95,8 @@ class PatientControllerUITest {
     }
 
     /**
-     * Verify that totalApptsLabel stays at its FXML default of "0 Total Appointments"
-     * when no server is running. Like nextApptLabel, it is only updated on a 200
+     * Verify that {@code totalApptsLabel} stays at its FXML default of "0 Total Appointments"
+     * when no server is running. Like {@code nextApptLabel}, it is only updated on a 200
      * response, so the catch path leaves the default value untouched.
      *
      * @param robot TestFX robot that simulates user interaction with the UI
