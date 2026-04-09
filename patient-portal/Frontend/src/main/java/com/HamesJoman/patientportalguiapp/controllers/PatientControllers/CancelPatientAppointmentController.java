@@ -18,6 +18,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.http.HttpResponse;
 
+/**
+ * Controller that handles logic for cancelling appointment from patient dashboard
+ *
+ * @author Corey Suhr
+ */
 public class CancelPatientAppointmentController {
     @FXML
     private Label actionText;
@@ -35,6 +40,9 @@ public class CancelPatientAppointmentController {
 
     private int selectedAppointmentId = -1;
 
+    /**
+     * Initialize the appointment combo box with all appointments for the patient
+     */
     @FXML
     public void initialize(){
         appointmentSelectComboBox.getItems().addAll("Appointment");

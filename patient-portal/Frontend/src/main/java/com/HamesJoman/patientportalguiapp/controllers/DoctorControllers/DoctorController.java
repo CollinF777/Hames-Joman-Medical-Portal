@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Controller that handles all logic for the doctor view
  *
- * @author Collin Fair and Liam Callahan
+ * @author Collin Fair, Liam Callahan, and Corey Suhr
  */
 public class DoctorController {
 

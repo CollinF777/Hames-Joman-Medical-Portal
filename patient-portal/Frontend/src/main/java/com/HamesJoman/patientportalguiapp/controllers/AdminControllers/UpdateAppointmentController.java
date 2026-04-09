@@ -15,6 +15,11 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * Controller for updating appointment
+ *
+ * @author Corey Suhr
+ */
 public class UpdateAppointmentController {
     @FXML
     private Label actionText;
@@ -53,6 +58,9 @@ public class UpdateAppointmentController {
 
     private int selectedAppointmentId = -1;
 
+    /**
+     * Initialize the spinners for 15 minute intervals and load appointments
+     */
     @FXML
     public void initialize(){
         startHourSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23));
@@ -72,6 +80,9 @@ public class UpdateAppointmentController {
         appointmentSelectComboBox.setOnAction(e -> onAppointmentSelected());
     }
 
+    /**
+     * Method for filling out existing fields based on selected appointment
+     */
     private void onAppointmentSelected() {
         String selected = appointmentSelectComboBox.getValue().toString();
         if(selected == null){
@@ -108,6 +119,9 @@ public class UpdateAppointmentController {
         }
     }
 
+    /**
+     * Method for loading all patients and doctors
+     */
     private void loadPatientsDoctors() {
         try{
             HttpResponse<String> response = ApiClient.getAllUsers();
@@ -161,6 +175,9 @@ public class UpdateAppointmentController {
         }
     }
 
+    /**
+     * Method for loading all existing appointments
+     */
     private void loadAppointments() {
         try{
             HttpResponse<String> response = ApiClient.getAllAppointments();
@@ -187,6 +204,11 @@ public class UpdateAppointmentController {
         }
     }
 
+    /**
+     * Method for disabling all edit fields if needed
+     *
+     * @param disabled boolean that says if fields are editable or not
+     */
     private void setEditFieldsDisabled(boolean disabled){
         appointmentDatePicker.setDisable(disabled);
         startHourSpinner.setDisable(disabled);
@@ -198,12 +220,18 @@ public class UpdateAppointmentController {
         updateButton.setDisable(disabled);
     }
 
+    /**
+     * Goes back to default admin view on back button click
+     */
     @FXML
     private void onBackButtonClick() {
         Stage stage = (Stage) backButton.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Updates appointment if all fields are correct and there are no conflicts
+     */
     @FXML
     private void onUpdateButtonClick() {
         if(selectedAppointmentId == -1){

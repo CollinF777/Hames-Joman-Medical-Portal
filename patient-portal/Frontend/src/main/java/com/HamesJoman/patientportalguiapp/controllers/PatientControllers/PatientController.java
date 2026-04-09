@@ -33,7 +33,7 @@ import java.util.List;
  * Logic for Patient views
  * Like 90% of this is taken from the doctor controller I did so check that for more comments
  *
- * @author Collin Fair
+ * @author Collin Fair and Corey Suhr
  */
 public class PatientController {
 

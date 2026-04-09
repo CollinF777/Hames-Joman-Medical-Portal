@@ -38,6 +38,9 @@ public class CancelAppointmentController {
 
     private int selectedAppointmentId = -1;
 
+    /**
+     * Initialize the combobox with all appointments
+     */
     @FXML
     public void initialize(){
         appointmentSelectComboBox.getItems().addAll("Appointment");
@@ -75,6 +78,9 @@ public class CancelAppointmentController {
         }
     }
 
+    /**
+     * Go back to admin view on back button click
+     */
     public void onBackButtonClick() {
         Stage stage = (Stage) backButton.getScene().getWindow();
         stage.close();

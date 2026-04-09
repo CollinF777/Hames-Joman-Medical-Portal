@@ -18,10 +18,18 @@ public class ConfirmController {
 
     private Boolean confirmed = false;
 
+    /**
+     * Simple method to check if user confirmed or not
+     *
+     * @return True or False based on confirmed status
+     */
     public Boolean isConfirmed(){
         return confirmed;
     }
 
+    /**
+     * On a yes button click change confirmed and open new window
+     */
     public void onYesButtonClick() {
         confirmed = true;
 
@@ -29,6 +37,9 @@ public class ConfirmController {
         stage.close();
     }
 
+    /**
+     * On a no button click
+     */
     public void onNoButtonClick() {
         Stage stage = (Stage) noButton.getScene().getWindow();
         stage.close();

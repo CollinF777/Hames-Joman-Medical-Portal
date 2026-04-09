@@ -119,7 +119,7 @@ public class AdminController {
     }
 
     /**
-     * Open up the view for creating new users on button click
+     * Open up cancel appointment view
      */
     @FXML
     public void onCancelAptButtonClick() {
@@ -142,6 +142,9 @@ public class AdminController {
         }
     }
 
+    /**
+     * Open up the view for creating new users on button click
+     */
     @FXML
     protected void onNewUserButtonClick() {
         actionText.setText("Creating a new User");
