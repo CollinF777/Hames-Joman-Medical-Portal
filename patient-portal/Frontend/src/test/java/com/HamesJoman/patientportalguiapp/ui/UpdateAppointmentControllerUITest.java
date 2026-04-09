@@ -18,6 +18,10 @@ import org.testfx.matcher.control.LabeledMatchers;
  * that all edit fields are correctly disabled on load and that the connection
  * error is shown when no backend is running.
  *
+ * This is JUST for ui testing, logic should be in the logic folder.
+ * Separated so logic tests can run independently — no point spinning up
+ * a whole JavaFX stage every time you tweak a validation rule.
+ *
  * @author Nathan Amidon
  */
 @ExtendWith(ApplicationExtension.class)
@@ -41,7 +45,7 @@ class UpdateAppointmentControllerUITest {
 
     /**
      * Verify that the update button is disabled on load. The controller calls
-     * setEditFieldsDisabled(true) during initialize(), so the user
+     * {@code setEditFieldsDisabled(true)} during {@code initialize()}, so the user
      * shouldn't be able to submit an update until they've actually selected an
      * appointment from the select combo box first.
      *
@@ -67,10 +71,10 @@ class UpdateAppointmentControllerUITest {
     }
 
     /**
-     * Verify that when no backend is running, loadAppointments() catches the
-     * connection exception and sets actionText to the appropriate error message.
-     * This exercises the catch block that fires during initialize() when
-     * ApiClient.getAllAppointments() can't reach the server.
+     * Verify that when no backend is running, {@code loadAppointments()} catches the
+     * connection exception and sets {@code actionText} to the appropriate error message.
+     * This exercises the catch block that fires during {@code initialize()} when
+     * {@code ApiClient.getAllAppointments()} can't reach the server.
      *
      * @param robot TestFX testing robot to simulate user interactions
      */

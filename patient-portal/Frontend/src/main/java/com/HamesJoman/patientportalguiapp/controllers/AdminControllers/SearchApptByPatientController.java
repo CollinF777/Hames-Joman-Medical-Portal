@@ -13,6 +13,8 @@ import java.net.http.HttpResponse;
 
 /**
  * Controller for handling all logic in the front end for searching an appointment by patient
+ *
+ * @author Collin Fair
  */
 public class SearchApptByPatientController {
 

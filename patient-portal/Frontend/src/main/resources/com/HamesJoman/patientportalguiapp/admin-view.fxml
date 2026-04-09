@@ -37,10 +37,12 @@
                         <Font size="11.0" />
                     </font>
                 </Label>
+                <Button maxWidth="Infinity" onAction="#onViewAllAppointmentsButtonClick" text="View All Appointments" />
                 <Button maxWidth="Infinity" onAction="#onPatientSearchAptButtonClick" text="Search Appointments by Patient" />
                 <Button maxWidth="Infinity" onAction="#onDoctorSearchAptButtonClick" text="Search Appointments by Doctor" />
                 <Button maxWidth="Infinity" onAction="#onNewAptButtonClick" text="New Appointment" />
             <Button maxWidth="Infinity" onAction="#onUpdateAptButtonClick" text="Update Appointment" />
+            <Button maxWidth="Infinity" onAction="#onCancelAptButtonClick" text="Cancel Appointment" />
                 <Separator>
                     <VBox.margin>
                         <Insets bottom="5" top="5" />
@@ -51,6 +53,7 @@
                         <Font size="11.0" />
                     </font>
                 </Label>
+                <Button maxWidth="Infinity" onAction="#onViewAllUsersButtonClick" text="View All Users" />
                 <Button maxWidth="Infinity" onAction="#onNewUserButtonClick" text="New User" />
                 <Button maxWidth="Infinity" onAction="#onUpdateUserButtonClick" text="Update User" />
                 <Button maxWidth="Infinity" onAction="#onDeleteUserButtonClick" text="Delete User" />

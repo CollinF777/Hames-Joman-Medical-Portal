@@ -1,6 +1,7 @@
 package com.HamesJoman.patientportalguiapp.controllers.AdminControllers;
 
 import com.HamesJoman.patientportalguiapp.SessionManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -12,7 +13,7 @@ import java.io.IOException;
 /**
  * Controller for default admin view, mostly other buttons that lead to other views
  *
- * @author Collin Fair, Corey Suhr, and Liam Callahan
+ * @author Collin Fair, Corey Suhr, Liam Callahan, and Mohamed Musa
  */
 public class AdminController {
     @FXML
@@ -113,6 +114,72 @@ public class AdminController {
             popup.show();
 
         } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Open up cancel appointment view
+     */
+    @FXML
+    public void onCancelAptButtonClick() {
+        actionText.setText("Cancelling an Appointment");
+
+        try{
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/Admin/cancel-appt-view.fxml")
+            );
+
+            Scene scene = new Scene(loader.load(), 400, 450);
+
+            Stage popup = new Stage();
+            popup.setTitle("Cancel Appointment");
+            popup.setScene(scene);
+            popup.show();
+            
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Open up the view for all users with role filter on button click
+     */
+    @FXML
+    protected void onViewAllUsersButtonClick() {
+        actionText.setText("Viewing all users.");
+
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/Admin/view-users-view.fxml")
+            );
+            Scene scene = new Scene(loader.load(), 620, 500);
+            Stage popup = new Stage();
+            popup.setTitle("All Users");
+            popup.setScene(scene);
+            popup.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Open up the view for all appointments with time filter on button click
+     */
+    @FXML
+    protected void onViewAllAppointmentsButtonClick() {
+        actionText.setText("Viewing all appointments.");
+
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/Admin/view-appointments-view.fxml")
+            );
+            Scene scene = new Scene(loader.load(), 700, 500);
+            Stage popup = new Stage();
+            popup.setTitle("All Appointments");
+            popup.setScene(scene);
+            popup.show();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

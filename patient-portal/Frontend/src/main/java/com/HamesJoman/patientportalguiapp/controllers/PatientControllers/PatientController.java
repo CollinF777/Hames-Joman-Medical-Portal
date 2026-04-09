@@ -5,15 +5,11 @@ import com.HamesJoman.patientportalguiapp.SessionManager;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -23,7 +19,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -33,7 +28,7 @@ import java.util.List;
  * Logic for Patient views
  * Like 90% of this is taken from the doctor controller I did so check that for more comments
  *
- * @author Collin Fair
+ * @author Collin Fair and Corey Suhr
  */
 public class PatientController {
 
@@ -238,6 +233,26 @@ public class PatientController {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Loads popup for cancelling an appointment
+     */
+    @FXML
+    public void onCancelAptButtonClick() {
+        try{
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/Patient/cancel-pat-appt-view.fxml")
+            );
+
+            Scene scene = new Scene(loader.load(), 400, 450);
+            Stage popup = new Stage();
+            popup.setTitle("Cancel Appointment");
+            popup.setScene(scene);
+            popup.show();
+        } catch(IOException e){
             e.printStackTrace();
         }
     }

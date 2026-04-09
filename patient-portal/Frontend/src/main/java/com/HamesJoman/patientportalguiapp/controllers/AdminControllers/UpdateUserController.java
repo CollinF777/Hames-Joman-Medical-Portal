@@ -13,6 +13,8 @@ import java.net.http.HttpResponse;
 
 /**
  * Controller for updating a user
+ *
+ * @author Collin Fair
  */
 public class UpdateUserController {
     @FXML
