@@ -20,10 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * verifying that the output box correctly reflects a connection failure on load
  * and that the doctor combo box stays empty when no backend is reachable.
  *
- * This is JUST for ui testing, logic should be in the logic folder.
- * Separated so logic tests can run on their own without dragging a full JavaFX
- * stage into every build — especially useful when you're only touching API glue code.
- *
  * @author Nathan Amidon
  */
 @ExtendWith(ApplicationExtension.class)
@@ -47,9 +43,9 @@ class SearchApptByDoctorControllerUITest {
     }
 
     /**
-     * Verify that when no backend is running, {@code loadDoctors()} catches the connection
-     * exception during {@code initialize()} and writes the appropriate error message into
-     * {@code outputBox}. The user should never be left staring at a blank screen.
+     * Verify that when no backend is running, loadDoctors() catches the connection
+     * exception during initialize() and writes the appropriate error message into
+     * outputBox. The user should never be left staring at a blank screen.
      *
      * @param robot TestFX testing robot to simulate user interactions
      */
@@ -62,7 +58,7 @@ class SearchApptByDoctorControllerUITest {
 
     /**
      * Verify that the doctor select combo box is completely empty when no backend is
-     * available. Since {@code loadDoctors()} failed to fetch any users, there should be
+     * available. Since loadDoctors() failed to fetch any users, there should be
      * nothing to populate the list with — zero items, not even a stale placeholder.
      *
      * @param robot TestFX testing robot used to look up the combo box node

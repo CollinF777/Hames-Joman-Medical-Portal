@@ -15,21 +15,17 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.util.WaitForAsyncUtils;
+import javafx.scene.control.Label;
+import org.testfx.util.WaitForAsyncUtils;
+import java.time.Duration;
 
 /**
  * Frontend tests for AdminController.
  * Tests UI behavior for the admin dashboard navigation buttons, specifically
- * verifying that clicking each nav button correctly updates the {@code #actionText}
+ * verifying that clicking each nav button correctly updates the actionText
  * label in the main admin view.
  *
- * Because several buttons open popup windows that also contain an {@code #actionText}
- * node, we scope all lookups to the primary stage's scene root to avoid any
- * ambiguous multi-window ID conflicts.
- *
- * This is JUST for ui testing, logic should be the logic folder.
- * I separated these as prior I was only getting logic errors but no ui errors.
- * So I wanted to not have to run the ui tests every single time when it's not needed.
- * Overall this is likely just a better way to do it anyways.
+ * This is JUST for ui testing
  *
  * @author Nathan Amidon
  */
@@ -84,14 +80,8 @@ class AdminControllerUITest {
     }
 
     /**
-     * Helper that verifies the {@code #actionText} label in the admin view carries
-     * the expected text. We use the plain string-based {@code verifyThat} overload
-     * here because the admin view is always the FIRST window opened (in {@code @Start}),
-     * so TestFX's window-ordered lookup returns its {@code #actionText} node before
-     * any popup's node — no manual scoping required.
-     *
-     * We also call {@code waitForFxEvents()} first to make sure the FX thread has
-     * finished processing the button-click action before we read the label.
+     * Helper that verifies the #actionText label in the admin view carries
+     * the expected text.
      *
      * @param expected the exact string we expect the label to display
      */
@@ -104,7 +94,7 @@ class AdminControllerUITest {
 
     /**
      * Clicking "Search Appointments by Patient" should update the main view's
-     * {@code #actionText} label to reflect that a patient appointment search is in progress.
+     * actionText label to reflect that a patient appointment search is in progress.
      *
      * @param robot TestFX testing robot to click buttons
      */
@@ -116,7 +106,7 @@ class AdminControllerUITest {
 
     /**
      * Clicking "Search Appointments by Doctor" should update the main view's
-     * {@code #actionText} label to reflect that a doctor appointment search is in progress.
+     * actionText label to reflect that a doctor appointment search is in progress.
      *
      * @param robot TestFX testing robot to click buttons
      */
@@ -127,7 +117,7 @@ class AdminControllerUITest {
     }
 
     /**
-     * Clicking "New Appointment" should update the main view's {@code #actionText}
+     * Clicking "New Appointment" should update the main view's actionText
      * label to indicate that the appointment creation flow has been triggered.
      *
      * @param robot TestFX testing robot to click buttons
@@ -139,7 +129,7 @@ class AdminControllerUITest {
     }
 
     /**
-     * Clicking "Update Appointment" should update the main view's {@code #actionText}
+     * Clicking "Update Appointment" should update the main view's actionText
      * label to indicate that the appointment update flow has been triggered.
      *
      * @param robot TestFX testing robot to click buttons
@@ -151,7 +141,7 @@ class AdminControllerUITest {
     }
 
     /**
-     * Clicking "New User" should update the main view's {@code #actionText} label to
+     * Clicking "New User" should update the main view's actionText label to
      * indicate that the user creation flow has been triggered.
      *
      * @param robot TestFX testing robot to click buttons
@@ -163,7 +153,7 @@ class AdminControllerUITest {
     }
 
     /**
-     * Clicking "Delete User" should update the main view's {@code #actionText} label to
+     * Clicking "Delete User" should update the main view's actionText label to
      * indicate that the user deletion flow has been triggered.
      *
      * @param robot TestFX testing robot to click buttons
@@ -175,7 +165,7 @@ class AdminControllerUITest {
     }
 
     /**
-     * Clicking "Update User" should update the main view's {@code #actionText} label to
+     * Clicking "Update User" should update the main view's actionText label to
      * indicate that the user update flow has been triggered.
      *
      * @param robot TestFX testing robot to click buttons
