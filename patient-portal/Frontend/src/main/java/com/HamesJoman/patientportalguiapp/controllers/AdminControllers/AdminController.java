@@ -1,6 +1,7 @@
 package com.HamesJoman.patientportalguiapp.controllers.AdminControllers;
 
 import com.HamesJoman.patientportalguiapp.SessionManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -118,6 +119,25 @@ public class AdminController {
     }
 
     /**
+     * Open up cancel appointment view
+     */
+    @FXML
+    public void onCancelAptButtonClick() {
+        actionText.setText("Cancelling an Appointment");
+
+        try{
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/Admin/cancel-appt-view.fxml")
+            );
+
+            Scene scene = new Scene(loader.load(), 400, 450);
+
+            Stage popup = new Stage();
+            popup.setTitle("Cancel Appointment");
+            popup.setScene(scene);
+            popup.show();
+            
+        } catch (IOException e){
      * Open up the view for all users with role filter on button click
      */
     @FXML

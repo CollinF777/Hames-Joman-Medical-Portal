@@ -33,7 +33,7 @@ import java.util.List;
  * Logic for Patient views
  * Like 90% of this is taken from the doctor controller I did so check that for more comments
  *
- * @author Collin Fair
+ * @author Collin Fair and Corey Suhr
  */
 public class PatientController {
 
@@ -238,6 +238,26 @@ public class PatientController {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Loads popup for cancelling an appointment
+     */
+    @FXML
+    public void onCancelAptButtonClick() {
+        try{
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/HamesJoman/patientportalguiapp/cancel-pat-appt-view.fxml")
+            );
+
+            Scene scene = new Scene(loader.load(), 400, 450);
+            Stage popup = new Stage();
+            popup.setTitle("Cancel Appointment");
+            popup.setScene(scene);
+            popup.show();
+        } catch(IOException e){
             e.printStackTrace();
         }
     }
