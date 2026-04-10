@@ -20,7 +20,7 @@ import java.net.http.HttpResponse;
 /**
  * Controller that handles logic for cancelling appointment from doctor dashboard
  *
- * @author Corey Suhr
+ * @author Corey Suhr and Collin Fair
  */
 public class CancelDoctorAppointmentController {
     @FXML
@@ -28,6 +28,18 @@ public class CancelDoctorAppointmentController {
 
     @FXML
     private ComboBox<String> appointmentSelectComboBox;
+
+    @FXML
+    private Label detailPatientLabel;
+
+    @FXML
+    private Label detailDateLabel;
+
+    @FXML
+    private Label detailTimeLabel;
+
+    @FXML
+    private Label detailStatusLabel;
 
     @FXML
     private Button backButton;
@@ -40,38 +52,42 @@ public class CancelDoctorAppointmentController {
     private int selectedAppointmentId = -1;
 
     /**
-     * Initialize appointment combobox with all appointments for a doctor
+     * Initialize with active appointments and clear any details from earlier
      */
     @FXML
     public void initialize(){
-        appointmentSelectComboBox.getItems().addAll("Appointment");
+        clearDetails();
         loadAppointments();
     }
 
     /**
-     * Populate appointments in appointmentSelectComboBox
+     * Populate active appointments in appointmentSelectComboBox
      */
     private void loadAppointments() {
         try{
-            HttpResponse<String> response = ApiClient.getAllAppointments();
+            HttpResponse<String> response = ApiClient.getAppointmentsByDoctor(SessionManager.getInstance().getUserId());
 
             if(response.statusCode() == 200){
                 JsonNode appointments = mapper.readTree(response.body());
                 ObservableList<String> items = FXCollections.observableArrayList();
 
                 for(JsonNode appointment: appointments){
-                    if(
-                            !appointment.get("status").asText().equalsIgnoreCase("CANCELLED")
-                            && appointment.get("doctor").get("id").asInt() == SessionManager.getInstance().getUserId()
-                    ){
+                    if(appointment.get("status").asText().equalsIgnoreCase("ACTIVE")){
                         int id = appointment.get("id").asInt();
-                        String fName = appointment.get("patient").get("firstName").asText();
-                        String lName = appointment.get("patient").get("lastName").asText();
-                        items.add(id + " - " + fName + " " + lName);
+
+                        JsonNode patientNode = appointment.get("patient");
+                        String patientName = (patientNode == null || patientNode.isNull()) ? "Deleted Patient"
+                                : patientNode.get("firstName").asText() + " " + patientNode.get("lastName").asText();
+
+                        items.add("Appointment #" + id + " — " + patientName);
                     }
                 }
 
                 appointmentSelectComboBox.setItems(items);
+
+                if (items.isEmpty()) {
+                    actionText.setText("You have no active appointments");
+                }
             }
             else{
                 actionText.setText("Failed to load appointments: " + response.statusCode());
@@ -119,8 +135,20 @@ public class CancelDoctorAppointmentController {
             // Once view is closed, check if the cancellation is confirmed, and attempt to cancel appointment if it is
             if(confirmController.isConfirmed()){
                 try {
-                    ApiClient.cancelAppointment(selectedAppointmentId);
+                    HttpResponse<String> response = ApiClient.cancelAppointment(selectedAppointmentId);
+
+                    if (response.statusCode() == 200) {
+                        actionText.setText("Appointment #" + selectedAppointmentId + " canceled");
+
+                        selectedAppointmentId = -1;
+                        clearDetails();
+                        loadAppointments();
+                    }
+                    else {
+                        actionText.setText("Failed to cancel: " + response.statusCode());
+                    }
                 } catch (Exception e) {
+                    actionText.setText("Couldnt connect to server");
                     e.printStackTrace();
                 }
             }
@@ -138,7 +166,38 @@ public class CancelDoctorAppointmentController {
             return;
         }
 
-        int id = Integer.parseInt(selected.split(" - ")[0].trim());
+        int id = Integer.parseInt(selected.split("#")[1].split("\\s")[0].trim());
         selectedAppointmentId = id;
+
+        try {
+            HttpResponse<String> response = ApiClient.getAppointmentById(String.valueOf(id));
+
+            if (response.statusCode() == 200) {
+                JsonNode apt = mapper.readTree(response.body());
+
+                JsonNode patientNode = apt.get("patient");
+                String patientInfo = (patientNode == null || patientNode.isNull()) ? "Deleted Patient"
+                        : patientNode.get("firstName").asText() + " " + patientNode.get("lastName").asText()
+                        + " (ID: " + patientNode.get("id").asInt() + ")";
+
+                actionText.setText("Review the details below before cancelling the appointment");
+                detailPatientLabel.setText(patientInfo);
+                detailDateLabel.setText(apt.get("date").asText());
+                detailTimeLabel.setText(apt.get("startTime").asText() + " – " + apt.get("endTime").asText());
+                detailStatusLabel.setText(apt.get("status").asText());
+            }
+        } catch(Exception e) {
+
+        }
+    }
+
+    /**
+     * Clears the detail panel back to placeholder
+     */
+    public void clearDetails() {
+        detailPatientLabel.setText("—");
+        detailDateLabel.setText("—");
+        detailTimeLabel.setText("—");
+        detailStatusLabel.setText("—");
     }
 }

@@ -93,6 +93,23 @@ public class DoctorController {
         }
         appointmentList.clear();
 
+        try {
+            HttpResponse<String> response = ApiClient.getAppointmentsByDoctor(SessionManager.getInstance().getUserId());
+            if (response.statusCode() == 200) {
+                allAppointments = mapper.readTree(response.body());
+            }
+            else {
+                appointmentList.add("Failed to fetch appointments: " + response.statusCode());
+                appointmentListView.setItems(appointmentList);
+                return;
+            }
+        } catch (Exception e) {
+            appointmentList.add("Couldnt connect to server");
+            appointmentListView.setItems(appointmentList);
+            e.printStackTrace();
+            return;
+        }
+
         LocalDate today = LocalDate.now();
         String filter = filterComboBox.getValue();
 
