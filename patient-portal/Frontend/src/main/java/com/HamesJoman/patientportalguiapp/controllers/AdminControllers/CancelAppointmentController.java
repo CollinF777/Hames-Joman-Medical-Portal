@@ -19,7 +19,7 @@ import java.net.http.HttpResponse;
 /**
  * Controller that handles logic for cancelling appointment from admin dashboard
  *
- * @author Corey Suhr
+ * @author Corey Suhr and Collin Fair
  */
 public class CancelAppointmentController {
     @FXML
@@ -27,6 +27,21 @@ public class CancelAppointmentController {
 
     @FXML
     private ComboBox<String> appointmentSelectComboBox;
+
+    @FXML
+    private Label detailPatientLabel;
+
+    @FXML
+    private Label detailDoctorLabel;
+
+    @FXML
+    private Label detailDateLabel;
+
+    @FXML
+    private Label detailTimeLabel;
+
+    @FXML
+    private Label detailStatusLabel;
 
     @FXML
     private Button backButton;
@@ -39,11 +54,11 @@ public class CancelAppointmentController {
     private int selectedAppointmentId = -1;
 
     /**
-     * Initialize the combobox with all appointments
+     * Initialize with all active appointments
      */
     @FXML
     public void initialize(){
-        appointmentSelectComboBox.getItems().addAll("Appointment");
+        clearDetails();
         loadAppointments();
     }
 
@@ -59,17 +74,28 @@ public class CancelAppointmentController {
                 ObservableList<String> items = FXCollections.observableArrayList();
 
                 for(JsonNode appointment: appointments){
-                    if(!appointment.get("status").asText().equalsIgnoreCase("CANCELLED")){
+                    if(appointment.get("status").asText().equalsIgnoreCase("ACTIVE")){
                         int id = appointment.get("id").asInt();
-                        String patientName = appointment.get("patient").get("lastName").asText();
-                        String doctorName = appointment.get("doctor").get("lastName").asText();
-                        items.add(id + " - " + patientName + "/" + doctorName);
+                        JsonNode patientNode = appointment.get("patient");
+                        String patientName = (patientNode == null || patientNode.isNull()) ? "Deleted Patient"
+                                : patientNode.get("firstName").asText() + " " + patientNode.get("lastName").asText();
+
+                        JsonNode doctorNode = appointment.get("doctor");
+                        String doctorName = (doctorNode == null || doctorNode.isNull()) ? "Deleted Doctor"
+                                : "Dr. " + doctorNode.get("firstName").asText() + " " + doctorNode.get("lastName").asText();
+
+                        items.add("Appointment #" + id + " — " + patientName + " / " + doctorName);
+
                     }
                 }
 
                 appointmentSelectComboBox.setItems(items);
+
+                if (items.isEmpty()) {
+                    actionText.setText("No active appointments");
+                }
             }
-            else{
+            else {
                 actionText.setText("Failed to load appointments: " + response.statusCode());
             }
         } catch (Exception e){
@@ -115,8 +141,20 @@ public class CancelAppointmentController {
             // Once view is closed, check if the cancellation is confirmed, and attempt to cancel appointment if it is
             if(confirmController.isConfirmed()){
                 try {
-                    ApiClient.cancelAppointment(selectedAppointmentId);
+                    HttpResponse<String> response = ApiClient.cancelAppointment(selectedAppointmentId);
+
+                    if (response.statusCode() == 200) {
+                        actionText.setText("Appointment #" + selectedAppointmentId + " canceled");
+
+                        selectedAppointmentId = -1;
+                        clearDetails();
+                        loadAppointments();
+                    }
+                    else {
+                        actionText.setText("Failed to cancel: " + response.statusCode());
+                    }
                 } catch (Exception e) {
+                    actionText.setText("Couldnt connect to server");
                     e.printStackTrace();
                 }
             }
@@ -134,7 +172,50 @@ public class CancelAppointmentController {
             return;
         }
 
-        int id = Integer.parseInt(selected.split(" - ")[0].trim());
+        // Parse the ID out of Appointment #X -
+        int id = Integer.parseInt(selected.split("#")[1].split("\\s")[0].trim());
         selectedAppointmentId = id;
+
+        try {
+            HttpResponse<String> response = ApiClient.getAppointmentById(String.valueOf(id));
+
+            if (response.statusCode() == 200) {
+                JsonNode apt = mapper.readTree(response.body());
+
+                JsonNode patientNode = apt.get("patient");
+                String patientInfo = (patientNode == null || patientNode.isNull()) ? "Deleted Patient"
+                        : patientNode.get("firstName").asText() + " " + patientNode.get("lastName").asText()
+                        + " (ID: " + patientNode.get("id").asInt() + ")";
+
+                JsonNode doctorNode = apt.get("doctor");
+                String doctorInfo = (doctorNode == null || doctorNode.isNull()) ? "Deleted Doctor"
+                        : "Dr. " + doctorNode.get("firstName").asText() + " " + doctorNode.get("lastName").asText()
+                        + " (ID: " + doctorNode.get("id").asInt() + ")";
+
+                actionText.setText("Review the details below before cancelling the appointment");
+                detailPatientLabel.setText(patientInfo);
+                detailDoctorLabel.setText(doctorInfo);
+                detailDateLabel.setText(apt.get("date").asText());
+                detailTimeLabel.setText(apt.get("startTime").asText() + " – " + apt.get("endTime").asText());
+                detailStatusLabel.setText(apt.get("status").asText());
+            }
+            else {
+                actionText.setText("Failed to load appointment");
+            }
+        } catch (Exception e) {
+            actionText.setText("Couldnt connect to server.");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Clears the detail panel back to placeholder
+     */
+    public void clearDetails() {
+        detailPatientLabel.setText("—");
+        detailDoctorLabel.setText("—");
+        detailDateLabel.setText("—");
+        detailTimeLabel.setText("—");
+        detailStatusLabel.setText("—");
     }
 }
