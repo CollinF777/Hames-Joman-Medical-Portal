@@ -4,6 +4,11 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.security.cert.X509Certificate;
+import java.util.Collections;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 /**
  * Class to handle all HTTP communication between
@@ -12,10 +17,27 @@ import java.net.http.HttpResponse;
  */
 public class ApiClient {
     // Base backend API url
-    private static final String BASE_URL = "http://localhost:8080/api";
+    private static final String BASE_URL = "https://localhost:8443/api";
 
-    // Start the HttpClient instance
-    private static final HttpClient client = HttpClient.newHttpClient();
+    // Start the HttpClient instance with SSL context that accepts untrusted certs
+    private static final HttpClient client;
+    static {
+        try {
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, new TrustManager[]{
+                new X509TrustManager() {
+                    public X509Certificate[] getAcceptedIssuers() { return new X509Certificate[0]; }
+                    public void checkClientTrusted(X509Certificate[] certs, String authType) {}
+                    public void checkServerTrusted(X509Certificate[] certs, String authType) {}
+                }
+            }, new java.security.SecureRandom());
+            client = HttpClient.newBuilder()
+                    .sslContext(sslContext)
+                    .build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     //===========================================================================
     // Auth Routes
