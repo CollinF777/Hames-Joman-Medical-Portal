@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Frontend tests for AdminController.
  *
- * @author Nathan Amidon
+ * @author Nathan Amidon and Collin Fair
  */
 @ExtendWith(ApplicationExtension.class)
 class AdminControllerUITest {
@@ -150,5 +150,39 @@ class AdminControllerUITest {
     void updateUserButtonUpdatesActionTextTest(FxRobot robot) {
         robot.clickOn("Update User");
         assertEquals("Updating a User", getAdminActionText());
+    }
+
+    /**
+     * Clicking "View All Users" should update actionText to confirm the view was opened.
+     *
+     * @param robot TestFX robot
+     */
+    @Test
+    void viewAllUsersButtonUpdatesActionTextTest(FxRobot robot) {
+        robot.clickOn("View All Users");
+        assertEquals("Viewing all users.", getAdminActionText());
+    }
+
+    /**
+     * Clicking "View All Appointments" should update actionText to confirm the view was opened.
+     *
+     * @param robot TestFX robot
+     */
+    @Test
+    void viewAllAppointmentsButtonUpdatesActionTextTest(FxRobot robot) {
+        robot.clickOn("View All Appointments");
+        assertEquals("Viewing all appointments.", getAdminActionText());
+    }
+
+    /**
+     * Clicking "Cancel Appointment" should update actionText to indicate the cancel
+     * flow has been triggered.
+     *
+     * @param robot TestFX robot
+     */
+    @Test
+    void cancelAppointmentButtonUpdatesActionTextTest(FxRobot robot) {
+        robot.clickOn("Cancel Appointment");
+        assertEquals("Cancelling an Appointment", getAdminActionText());
     }
 }

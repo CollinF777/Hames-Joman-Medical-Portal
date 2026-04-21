@@ -52,6 +52,18 @@ public class CancelPatientAppointmentController {
 
     private int selectedAppointmentId = -1;
 
+    // This is how we are going to refresh the dashboards, this can be called to refresh appointments on success
+    private Runnable onCancelSuccess;
+
+    /**
+     * On a successful cancel, mark it as such
+     *
+     * @param callback code to run on cancel success
+     */
+    public void setOnCancelSuccess (Runnable callback) {
+        this.onCancelSuccess = callback;
+    }
+
     /**
      * Initialize the appointment combo box and clear details
      */
@@ -139,6 +151,11 @@ public class CancelPatientAppointmentController {
                         selectedAppointmentId = -1;
                         clearDetails();
                         loadAppointments();
+
+                        // Notify the dashboard to refresh
+                        if (onCancelSuccess != null) {
+                            onCancelSuccess.run();
+                        }
                     } else {
                         actionText.setText("Failed to cancel: " + response.statusCode());
                     }
