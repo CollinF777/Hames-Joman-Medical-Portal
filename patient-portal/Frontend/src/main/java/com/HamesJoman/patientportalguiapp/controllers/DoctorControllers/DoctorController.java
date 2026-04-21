@@ -4,6 +4,8 @@ import com.HamesJoman.patientportalguiapp.ApiClient;
 import com.HamesJoman.patientportalguiapp.SessionManager;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
@@ -41,6 +44,9 @@ public class DoctorController {
     private final ObjectMapper mapper = new ObjectMapper();
     private final ObservableList<String> appointmentList = FXCollections.observableArrayList();
     private JsonNode allAppointments;
+
+    // This is how we're going to poll the server so the doctor sees regularly updated info
+    private Timeline refreshTimer;
 
     /**
      * Initialize doctor view to welcome them and set combobox for filters
@@ -82,6 +88,14 @@ public class DoctorController {
             appointmentListView.setItems(appointmentList);
             e.printStackTrace();
         }
+
+        // Starts the polling, every 15 seconds applyFilter() would will be called
+        // For scalability this isnt the best, you would want to reduce this significantly
+        // to reduce unneeded db calls. But for now im just leaving it like this, you could
+        // also probably use websockets but that would be a lot more work
+        refreshTimer = new Timeline(new KeyFrame(Duration.seconds(15), e -> applyFilter()));
+        refreshTimer.setCycleCount(Timeline.INDEFINITE);
+        refreshTimer.play();
     }
 
     /**
@@ -247,10 +261,13 @@ public class DoctorController {
     }
 
     /**
-     * Logout on button click
+     * Logout on button click and stop refresh timer
      */
     @FXML
     public void onLogoutButtonClick() {
+        if (refreshTimer != null) {
+            refreshTimer.stop();
+        }
         // Wipe session
         SessionManager.getInstance().clear();
 
@@ -279,6 +296,10 @@ public class DoctorController {
             );
 
             Scene scene = new Scene(loader.load(), 400, 450);
+
+            CancelDoctorAppointmentController cancelController = loader.getController();
+            cancelController.setOnCancelSuccess(this::applyFilter);
+
             Stage popup = new Stage();
             popup.setTitle("Cancel Appointment");
             popup.setScene(scene);

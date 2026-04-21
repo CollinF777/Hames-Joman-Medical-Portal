@@ -51,6 +51,18 @@ public class CancelDoctorAppointmentController {
 
     private int selectedAppointmentId = -1;
 
+    // This is how we are going to refresh the dashboards, this can be called to refresh appointments on success
+    private Runnable onCancelSuccess;
+
+    /**
+     * On a successful cancel, mark it as such
+     *
+     * @param callback code to run on cancel success
+     */
+    public void setOnCancelSuccess (Runnable callback) {
+        this.onCancelSuccess = callback;
+    }
+
     /**
      * Initialize with active appointments and clear any details from earlier
      */
@@ -143,6 +155,11 @@ public class CancelDoctorAppointmentController {
                         selectedAppointmentId = -1;
                         clearDetails();
                         loadAppointments();
+
+                        // Notify the dashboard to refresh
+                        if (onCancelSuccess != null) {
+                            onCancelSuccess.run();
+                        }
                     }
                     else {
                         actionText.setText("Failed to cancel: " + response.statusCode());
@@ -187,7 +204,8 @@ public class CancelDoctorAppointmentController {
                 detailStatusLabel.setText(apt.get("status").asText());
             }
         } catch(Exception e) {
-
+            actionText.setText("Couldnt connect to server");
+            e.printStackTrace();
         }
     }
 
