@@ -1,0 +1,9 @@
+module:com.HamesJoman.patientportalguiapp
+com.HamesJoman.patientportalguiapp
+com.HamesJoman.patientportalguiapp.controllers
+com.HamesJoman.patientportalguiapp.controllers.AdminControllers
+com.HamesJoman.patientportalguiapp.controllers.DoctorControllers
+com.HamesJoman.patientportalguiapp.controllers.PatientControllers
+com.HamesJoman.patientportalguiapp.controllers.SharedControllers
+com.HamesJoman.patientportalguiapp.logic
+com.HamesJoman.patientportalguiapp.ui

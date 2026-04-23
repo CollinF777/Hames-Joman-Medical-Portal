@@ -1,0 +1,6 @@
+com.HamesJoman.patient_portal
+com.HamesJoman.patient_portal.controllers
+com.HamesJoman.patient_portal.dto
+com.HamesJoman.patient_portal.models
+com.HamesJoman.patient_portal.repositories
+com.HamesJoman.patient_portal.services
