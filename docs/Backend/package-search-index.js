@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.HamesJoman.patient_portal"},{"l":"com.HamesJoman.patient_portal.controllers"},{"l":"com.HamesJoman.patient_portal.dto"},{"l":"com.HamesJoman.patient_portal.models"},{"l":"com.HamesJoman.patient_portal.repositories"},{"l":"com.HamesJoman.patient_portal.services"}];updateSearchResults();
