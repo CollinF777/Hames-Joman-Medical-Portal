@@ -97,9 +97,13 @@ patient-portal/
    ```bash
    ./mvnw spring-boot:run
    ```
+   Or with the jar file
+   ```bash
+   java -jar patient-portal-0.0.1-SNAPSHOT.jar
+   ```
    The server starts on **port 8443** (HTTPS). Spring will auto-create the database schema on first run.
 
-4. Verify the API is running by hitting `https://localhost:8443/api/users` in Postman. If you get a 200 (empty array), you're good.
+5. Verify the API is running by hitting `https://localhost:8443/api/users` in Postman. If you get a 200 (empty array), you're good.
 
 > **Note:** The backend uses a self-signed SSL certificate. You'll need to accept the cert in Postman (`Settings → SSL certificate verification → OFF`) or your HTTP client.
 
