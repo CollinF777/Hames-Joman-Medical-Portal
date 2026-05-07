@@ -1,6 +1,9 @@
 # Hames Joman Medical Patient Portal
 
-A full-stack medical appointment management system built with a Spring Boot REST API backend and a JavaFX desktop frontend. Three user roles — **Admin**, **Doctor**, and **Patient** — each get their own dashboard with role-appropriate functionality.
+A full-stack medical appointment management system built with a Spring Boot REST API backend and a JavaFX desktop frontend. Three user roles **Admin**, **Doctor**, and **Patient** each get their own dashboard with role-appropriate functionality.
+
+<img width="703" height="429" alt="image" src="https://github.com/user-attachments/assets/6ed61d85-9698-433a-9bd1-0b7f8ea2caf1" />
+
 
 ---
 
@@ -23,7 +26,7 @@ A full-stack medical appointment management system built with a Spring Boot REST
 
 **Backend**
 - Java 17
-- Spring Boot 4.x (Web, Data JPA, Security Crypto)
+- Spring Boot 4.x 
 - MySQL
 - BCrypt password hashing
 - JUnit 5 + Mockito
@@ -78,7 +81,7 @@ patient-portal/
    ```sql
    CREATE DATABASE patient_portal;
    ```
-3. Note your MySQL username, password, and port (default is `3306`; the template uses `3308` — adjust as needed).
+3. Note your MySQL username, password, and port (default is `3306`; the template uses `3308` adjust as needed).
 
 ### Backend Setup
 
